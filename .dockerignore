@@ -27,4 +27,6 @@ data/index/
 
 # Not needed at runtime
 tests/
+# Offline-only scraper code never ships (D-003); its deps are excluded via --no-default-groups
+src/dgbot/scraping/
 frontend/node_modules/

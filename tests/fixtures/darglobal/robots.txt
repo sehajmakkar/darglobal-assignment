@@ -1,0 +1,42 @@
+User-agent: *
+# Disallow access to sitemap index
+Disallow: /sitemap_index.xml
+
+# Disallow tracking parameters
+Disallow: /*utm_source=
+Disallow: /*utm_medium=
+Disallow: /*utm_campaign=
+Disallow: /*utm_term=
+Disallow: /*utm_content=
+Disallow: /*utm_id=
+Disallow: /*sfmc_activityid=
+Disallow: /*sfmc_journey_id=
+Disallow: /*sfmc_journey_name=
+Disallow: /*dealercode=
+Disallow: /*ltclid=
+
+# Disallow malformed URLs with repeated ampersands
+Disallow: /*&&
+Disallow: /*&body=
+
+# Disallow unnecessary query parameters
+Disallow: /*?wc-ajax=
+Disallow: /*?post_type=
+Disallow: /*?s=
+
+# Disallow unnecessary fragments and paths
+Disallow: /*menu-bwvsd
+Disallow: /*tp_sp
+
+# Allow access to necessary parts of the site
+Allow: /$
+Allow: /blog/
+Allow: /press/
+Allow: /projects/
+
+# Disallow duplicate content caused by tracking fragments
+Disallow: /*&trk=
+Disallow: /*?trk=
+
+# Sitemap
+Sitemap: https://darglobal.co.uk/sitemap.xml

@@ -62,6 +62,12 @@ class Settings(BaseSettings):
         "+https://github.com/sehajmakkar/darglobal-assignment)"
     )
     scraper_max_rps: float = Field(default=1.0, gt=0, le=2.0)  # hard cap: D-004
+    scraper_timeout_s: float = Field(default=30.0, gt=0)
+    scraper_max_retries: int = Field(default=3, ge=0, le=5)
+    # Pause between DarGlobal pages in the real browser (D-020: 3-5 s, human pace).
+    scraper_browser_delay_s: float = Field(default=4.0, ge=3.0, le=10.0)
+    # Raw responses (HTML, sitemaps) + fetch metadata. Git-ignored; never shipped.
+    raw_data_dir: Path = Path("data/raw")
 
     @field_validator("openrouter_api_keys", "llm_models", mode="before")
     @classmethod

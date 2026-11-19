@@ -107,8 +107,8 @@ _More limitations will be added as they are found, each with its cause and impac
 
 ## Roadmap
 
-- [ ] Data collection: DarGlobal
-- [ ] Data collection: Wasalt
+- [x] Data collection: DarGlobal (460 pages)
+- [x] Data collection: Wasalt (public sitemaps + a small hand-saved sample)
 - [ ] Cleaning, normalization, and the data snapshot
 - [ ] Hybrid retrieval and evaluation set
 - [ ] RAG chat API with streaming and citations

@@ -14,6 +14,15 @@ class ConfigError(DgbotError):
     """Settings are missing or invalid for the requested operation."""
 
 
+class FetchError(DgbotError):
+    """A request kept failing after all retries (network error, 5xx, 429)."""
+
+    def __init__(self, url: str, reason: str) -> None:
+        super().__init__(f"{url}: {reason}")
+        self.url = url
+        self.reason = reason
+
+
 class SourceBlockedError(DgbotError):
     """A source site refused access (bot protection, 403, robots.txt disallow).
 

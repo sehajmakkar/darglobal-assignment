@@ -15,10 +15,10 @@ WORKDIR /app
 
 # Dependencies first (cached layer), project code second.
 COPY pyproject.toml uv.lock ./
-RUN uv sync --locked --no-dev --no-install-project --no-cache
+RUN uv sync --locked --no-default-groups --no-install-project --no-cache
 COPY README.md ./
 COPY src ./src
-RUN uv sync --locked --no-dev --no-editable --no-cache
+RUN uv sync --locked --no-default-groups --no-editable --no-cache
 
 # ── 2. Runtime: just Python + the venv, as a non-root user ───────────────────
 FROM ${PYTHON_IMAGE} AS runtime
