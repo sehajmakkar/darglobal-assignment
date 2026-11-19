@@ -1,0 +1,53 @@
+# ─── Private working docs (local only — never pushed) ────────────────
+# These are for my own understanding and for Claude Code context.
+CLAUDE.md
+plan.md
+challenges.md
+decisions.md
+notes/
+.claude/
+
+# ─── Secrets ─────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Data ────────────────────────────────────────────────────────────
+# Raw scraped HTML is large and reproducible → not committed.
+# Processed JSONL snapshot IS committed (the deployed image is built from it).
+data/raw/
+data/cache/
+data/index/
+*.sqlite
+*.db
+
+# ─── Python ──────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# ─── Node / frontend ─────────────────────────────────────────────────
+node_modules/
+frontend/dist/
+.vite/
+npm-debug.log*
+
+# ─── Models / embeddings cache ───────────────────────────────────────
+.cache/
+models/
+fastembed_cache/
+
+# ─── OS / editor ─────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp
