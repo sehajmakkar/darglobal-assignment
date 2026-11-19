@@ -59,6 +59,22 @@ The scraper follows these rules:
 - Automated requests use an honest User-Agent, a request-rate limit, and a response cache, so no page is downloaded twice.
 - It never tries to get around bot protection: no spoofed identities, stealth tooling, proxies, or CAPTCHA solving. Wasalt's main site blocks automated clients, so the scraper never requests it and uses only Wasalt's published sitemaps. The resulting gaps are listed under [Limitations](#limitations).
 
+## The data snapshot
+
+The scraped data is committed as JSONL in [`data/processed/`](data/processed/), so you can read exactly what the bot knows. [`QUALITY.md`](data/processed/QUALITY.md) shows field coverage, and [`manifest.json`](data/processed/manifest.json) shows counts and when the data was fetched.
+
+| File | Records | What it holds |
+|---|---|---|
+| `darglobal/projects.jsonl` | 29 | Projects: location, city/country, coordinates, property type, status, unit types, amenities, highlights, FAQs, brand partner |
+| `darglobal/partners.jsonl` | 11 | Brand partners (Aston Martin, Pagani, Trump, Missoni, …) and their projects |
+| `darglobal/articles.jsonl` | 357 | Blog posts, press releases, and insights |
+| `darglobal/pages.jsonl` | 37 | One-of-one properties, special project pages, company pages |
+| `wasalt/listings.jsonl.gz` | 62,687 | Sale, rent, and daily-rental listings from Wasalt's sitemaps: type, size, bedrooms, facing, Arabic link |
+| `wasalt/sample_listings.jsonl` | 23 | Listings saved by hand with price, city, district, and description |
+| `wasalt/areas.jsonl.gz` | 13,688 | Which property types Wasalt lists in each city and district |
+
+Personal data is excluded on purpose. Parsers copy only an allow-list of fields, and phone numbers, emails, and agent names are removed from free text.
+
 ## Run locally
 
 > The app currently serves a placeholder page and a health check while the chatbot is built.
@@ -101,7 +117,9 @@ tests/         # unit, integration, and HTML fixtures
 
 ## Limitations
 
-- **Most Wasalt listings have no price or city.** Wasalt's main site blocks automated access, so most listing data comes from sitemap URLs. Those URLs encode the property type, area, bedrooms, and listing ID. The bot says so when a question needs data it doesn't have.
+- **Most Wasalt listings have no price or city.** Wasalt's main site blocks automated access, so most listing data comes from sitemap URLs. Those URLs encode the property type, area, bedrooms, and listing ID. Only the 23 hand-saved listings have prices. The bot says so when a question needs data it doesn't have.
+- **Some Wasalt sizes are approximate.** Sitemap URLs drop the decimal point, so `7021-sqm` can mean 702.1 sqm. Implausible sizes are corrected and flagged as approximate. About a third of sizes are affected.
+- **DarGlobal doesn't publish prices.** Its project pages list no prices, so the bot never quotes one and points you to DarGlobal instead.
 
 _More limitations will be added as they are found, each with its cause and impact._
 
@@ -109,7 +127,7 @@ _More limitations will be added as they are found, each with its cause and impac
 
 - [x] Data collection: DarGlobal (460 pages)
 - [x] Data collection: Wasalt (public sitemaps + a small hand-saved sample)
-- [ ] Cleaning, normalization, and the data snapshot
+- [x] Cleaning, normalization, and the data snapshot ([`data/processed/`](data/processed/))
 - [ ] Hybrid retrieval and evaluation set
 - [ ] RAG chat API with streaming and citations
 - [ ] Chat UI (English and Arabic, RTL layout)

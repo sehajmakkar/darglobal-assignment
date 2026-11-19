@@ -68,6 +68,8 @@ class Settings(BaseSettings):
     scraper_browser_delay_s: float = Field(default=4.0, ge=3.0, le=10.0)
     # Raw responses (HTML, sitemaps) + fetch metadata. Git-ignored; never shipped.
     raw_data_dir: Path = Path("data/raw")
+    # Processed snapshot (committed, D-006): what the Docker image is built from.
+    processed_data_dir: Path = Path("data/processed")
 
     @field_validator("openrouter_api_keys", "llm_models", mode="before")
     @classmethod

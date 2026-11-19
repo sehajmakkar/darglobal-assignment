@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-19T21:43:48+00:00",
+  "data_fetched": {
+    "from": "2026-11-19T20:16:50+00:00",
+    "to": "2026-11-19T21:22:18+00:00"
+  },
+  "files": {
+    "darglobal/articles.jsonl": 357,
+    "darglobal/pages.jsonl": 43,
+    "darglobal/partners.jsonl": 11,
+    "darglobal/projects.jsonl": 29,
+    "wasalt/areas.jsonl.gz": 13688,
+    "wasalt/listings.jsonl.gz": 62687,
+    "wasalt/sample_listings.jsonl": 23
+  },
+  "total_records": 76838
+}
