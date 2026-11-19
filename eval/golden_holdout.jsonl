@@ -1,0 +1,12 @@
+{"id": "h-qatar", "question": "Which DarGlobal projects are in Qatar?", "lang": "en", "category": "darglobal", "expected": ["darglobal:project:les-vagues", "darglobal:project:rayana/*", "darglobal:section:projects", "darglobal:partner:partners/elie-saab"]}
+{"id": "h-w-status", "question": "Is W Residences in Dubai completed?", "lang": "en", "category": "darglobal", "expected": ["darglobal:project:w-residences"]}
+{"id": "h-fendi", "question": "What does Fendi Casa design for DarGlobal?", "lang": "en", "category": "darglobal", "expected": ["darglobal:partner:partners/fendi-casa", "darglobal:project:one-of-one/fendi-casa-azure-oceanfront-villas", "darglobal:project:rayana/darglobal-mansions-fendi-casa"]}
+{"id": "h-trump-penthouse", "question": "Tell me about the Trump Penthouse in Dubai", "lang": "en", "category": "darglobal", "expected": ["darglobal:project:one-of-one/trump-penthouse"]}
+{"id": "h-paramount", "question": "What is DarGlobal's partnership with Paramount?", "lang": "en", "category": "darglobal", "expected": ["darglobal:partner:partners/paramount"]}
+{"id": "h-floors", "question": "How many floors for sale are listed on Wasalt?", "lang": "en", "category": "wasalt", "expected": ["wasalt:summary:type:sale:floor"]}
+{"id": "h-resthouse", "question": "Rest houses for sale in Riyadh", "lang": "en", "category": "wasalt", "expected": ["wasalt:listing:5877630", "wasalt:summary:city:riyadh:sale*", "wasalt:summary:type:sale:rest-house"]}
+{"id": "h-8bed-villa", "question": "8-bedroom villa for rent in Riyadh", "lang": "en", "category": "wasalt", "expected": ["wasalt:listing:5923746", "wasalt:summary:city:riyadh:rent*", "wasalt:summary:type:rent:villa"]}
+{"id": "h-ar-lambo", "question": "ما هي شراكة دار جلوبال مع لامبورغيني؟", "lang": "ar", "category": "darglobal", "expected": ["darglobal:partner:partners/lamborghini", "darglobal:project:tierra-viva", "darglobal:project:one-of-one/painite-villas-design-inspired-by-automobili-lamborghini"]}
+{"id": "h-ar-khobar", "question": "عقارات للبيع في الخبر", "lang": "ar", "category": "wasalt", "expected": ["wasalt:summary:city:al-khobar:sale*"]}
+{"id": "h-ar-count", "question": "كم عدد العقارات المعروضة على وصلت؟", "lang": "ar", "category": "wasalt", "expected": ["wasalt:summary:overview"]}
+{"id": "h-ar-mahdiyah", "question": "شقة للبيع في حي المهدية بالرياض", "lang": "ar", "category": "wasalt", "expected": ["wasalt:listing:5834772:ar", "wasalt:listing:5834772", "wasalt:listing:5857508"]}

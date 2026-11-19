@@ -1,6 +1,6 @@
 # Data quality report
 
-Generated 2026-11-19 21:43 UTC.
+Generated 2026-11-19 21:58 UTC.
 
 ## DarGlobal projects — 29 records
 
@@ -79,7 +79,7 @@ Generated 2026-11-19 21:43 UTC.
 | `purpose` | 100% |
 | `property_type` | 100% |
 | `furnishing` | 0% |
-| `area_sqm` | 83% |
+| `area_sqm` | 80% |
 | `area_inferred` | 100% |
 | `bedrooms` | 68% |
 | `bathrooms` | 0% |
@@ -151,8 +151,8 @@ Generated 2026-11-19 21:43 UTC.
 - Pages by kind: company 22, project 15, section 6
 - Listings by purpose: sale 45492, rent 14511, daily_rent 2684
 - Listings by type: apartment 38848, villa 11444, land 5071, floor 5045, building 1472, rest house 332, chalet 219, room 198, studio 52, duplex 3, farm 2, tent 1
-- Areas by city (top 12): Riyadh 3685, Jeddah 2544, Madinah 1378, Dammam 1273, Makkah 1013, Al Khobar 828, Taif 722, Buraidah 386, Al Ahsa 191, Unayzah 146, Abha 121, Khamis Mushayt 117
-- Listing areas repaired from slugs (C-011): 21445
+- Areas by city (top 12): Riyadh 3749, Jeddah 2544, Madinah 1378, Dammam 1273, Makkah 1013, Al Khobar 835, Taif 722, Buraidah 386, Al Ahsa 191, Unayzah 146, Abha 121, Khamis Mushayt 117
+- Listing areas repaired from slugs (C-011): 29798
 
 ## Parse errors (0)
 

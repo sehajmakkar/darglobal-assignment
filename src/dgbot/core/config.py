@@ -71,6 +71,19 @@ class Settings(BaseSettings):
     # Processed snapshot (committed, D-006): what the Docker image is built from.
     processed_data_dir: Path = Path("data/processed")
 
+    # ── Indexing & retrieval (Phase 3) ───────────────────────────────
+    index_dir: Path = Path("data/index")  # git-ignored; built from the snapshot
+    qdrant_url: str | None = None  # None → embedded local mode in index_dir (D-009)
+    qdrant_collection: str = "dgbot"
+    # Bake-off winner (D-042): best MRR, Arabic 1.00, half the size of e5-large.
+    embedding_model: str = "google/embeddinggemma-300m"
+    sparse_model: str = "Qdrant/bm25"
+    embedding_cache_dir: Path | None = None  # fastembed model cache (baked into the image)
+    chunk_words: int = Field(default=200, ge=50, le=600)
+    chunk_overlap_words: int = Field(default=40, ge=0, le=200)
+    retrieval_top_k: int = Field(default=8, ge=1, le=50)
+    retrieval_prefetch_k: int = Field(default=40, ge=5, le=200)  # per branch, before fusion
+
     @field_validator("openrouter_api_keys", "llm_models", mode="before")
     @classmethod
     def _split_csv(cls, value: object) -> object:

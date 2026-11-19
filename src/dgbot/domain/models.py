@@ -178,3 +178,32 @@ AnyRecord = Annotated[
     Project | Partner | Article | Page | Listing | AreaCoverage,
     Field(discriminator="record_type"),
 ]
+
+
+# ── Retrieval units ──────────────────────────────────────────────────────────
+
+
+class Chunk(BaseModel):
+    """One retrievable passage: what gets embedded, retrieved, shown to the LLM and cited.
+
+    `text` starts with a short context line (record title + section) so a chunk is
+    understandable on its own. The other fields are payload for citations and filters.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    record_id: str
+    record_type: str  # project | partner | article | page | listing | summary
+    section: str  # card | details | faq | body | summary
+    source: Source
+    lang: Lang = Lang.EN
+    url: str
+    title: str
+    text: str
+    country: str | None = None
+    city: str | None = None
+    kind: str | None = None
+    purpose: str | None = None
+    property_type: str | None = None
+    published: date | None = None

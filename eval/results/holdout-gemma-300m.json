@@ -1,0 +1,183 @@
+{
+  "overall": {
+    "n": 12,
+    "hit_at": {
+      "1": 0.8333333333333334,
+      "3": 0.9166666666666666,
+      "5": 0.9166666666666666
+    },
+    "mrr": 0.8888888888888888
+  },
+  "by_group": {
+    "darglobal": {
+      "n": 6,
+      "hit_at": {
+        "1": 0.8333333333333334,
+        "3": 0.8333333333333334,
+        "5": 0.8333333333333334
+      },
+      "mrr": 0.8611111111111112
+    },
+    "lang:ar": {
+      "n": 4,
+      "hit_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0
+    },
+    "lang:en": {
+      "n": 8,
+      "hit_at": {
+        "1": 0.75,
+        "3": 0.875,
+        "5": 0.875
+      },
+      "mrr": 0.8333333333333334
+    },
+    "wasalt": {
+      "n": 6,
+      "hit_at": {
+        "1": 0.8333333333333334,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 0.9166666666666666
+    }
+  },
+  "items": [
+    {
+      "id": "h-qatar",
+      "rank": 6,
+      "retrieved": [
+        "darglobal:press:press/dar-al-arkan-global-launches-sales-of-the-most-premium-residential-address-in-qatar-les-vagues-by-elie-saab-with-views-of-lusail-skyline-and-the-sea-at-qetaifan-island-north",
+        "darglobal:blog:blog/whats-next-for-darglobal-a-sneak-peek-into-our-upcoming-projects",
+        "darglobal:blog:blog/real-estate-investment-in-qatar",
+        "darglobal:press:press/dar-al-arkan-and-qetaifan-projects-unveil-premium-sea-front-residences-with-interiors-designed-by-elie-saab-at-expo-2020-dubai",
+        "darglobal:press:press/dar-al-arkan-and-qetaifan-projects-unveil-premium-sea-front-residences-with-interiors-designed-by-elie-saab-in-qetaifan-island-north-qatar"
+      ]
+    },
+    {
+      "id": "h-w-status",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:w-residences",
+        "darglobal:press:press/darglobal-awards-the-main-works-of-w-residences-in-downtown-dubai-for-aed273000000-aed",
+        "darglobal:press:press/dar-al-arkan-reveals-w-residences-dubai-downtown-overlooking-dubais-burj-khalifa-and-dubai-fountain",
+        "darglobal:press:press/dar-al-arkan-commences-construction-of-the-sold-out-w-residences-in-downtown-dubai",
+        "darglobal:partner:partners/w-hotels"
+      ]
+    },
+    {
+      "id": "h-fendi",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:partner:partners/fendi-casa",
+        "darglobal:project:rayana/darglobal-mansions-fendi-casa",
+        "darglobal:press:press/darglobal-fendi-casa-announce-azure-oceanfront-villas-oman",
+        "darglobal:project:one-of-one/fendi-casa-azure-oceanfront-villas",
+        "darglobal:company:faq"
+      ]
+    },
+    {
+      "id": "h-trump-penthouse",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:one-of-one/trump-penthouse",
+        "darglobal:project:trump-international-hotel-and-tower-dubai",
+        "darglobal:partner:partners/the-trump-organization",
+        "darglobal:press:press/dar-global-trump-organization-launch-trump-hotel-tower-dubai",
+        "darglobal:section:one-of-one"
+      ]
+    },
+    {
+      "id": "h-paramount",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:partner:partners/paramount",
+        "darglobal:company:investor",
+        "darglobal:blog:blog/where-luxury-meets-design-aston-martins-collaboration-with-darglobal-on-the-astera",
+        "darglobal:company:faq",
+        "darglobal:section:home"
+      ]
+    },
+    {
+      "id": "h-floors",
+      "rank": 2,
+      "retrieved": [
+        "wasalt:summary:overview",
+        "wasalt:summary:type:sale:floor",
+        "wasalt:summary:city:sayhat:sale",
+        "wasalt:summary:type:rent:floor",
+        "wasalt:summary:city:alqawaruh:sale"
+      ]
+    },
+    {
+      "id": "h-resthouse",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:listing:5877630",
+        "wasalt:summary:city:riyadh:sale:1",
+        "wasalt:summary:city:riyadh:sale:2",
+        "wasalt:summary:city:riyadh:sale",
+        "wasalt:summary:city:jeddah:sale:1"
+      ]
+    },
+    {
+      "id": "h-8bed-villa",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:listing:5923746",
+        "wasalt:listing:5929494",
+        "wasalt:listing:5879806",
+        "wasalt:summary:type:rent:villa",
+        "wasalt:summary:city:riyadh:rent:2"
+      ]
+    },
+    {
+      "id": "h-ar-lambo",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:partner:partners/lamborghini",
+        "darglobal:project:invest-crypto",
+        "darglobal:company:about",
+        "darglobal:project:exclusive-plots",
+        "darglobal:blog:blog/our-vision-for-the-future-whats-next-for-real-estate-development"
+      ]
+    },
+    {
+      "id": "h-ar-khobar",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:city:al-khobar:sale",
+        "wasalt:summary:city:al-khobar:rent",
+        "wasalt:summary:city:al-khobar:daily_rent",
+        "wasalt:summary:city:jeddah:sale",
+        "wasalt:summary:city:jeddah:sale:1"
+      ]
+    },
+    {
+      "id": "h-ar-count",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:overview",
+        "wasalt:listing:5874277",
+        "wasalt:summary:type:sale:building",
+        "wasalt:summary:city:alshumlaa:sale",
+        "wasalt:summary:type:sale:rest-house"
+      ]
+    },
+    {
+      "id": "h-ar-mahdiyah",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:listing:5834772:ar",
+        "wasalt:listing:5834772",
+        "wasalt:listing:5874277",
+        "wasalt:listing:5857508",
+        "wasalt:listing:5855568:ar"
+      ]
+    }
+  ]
+}

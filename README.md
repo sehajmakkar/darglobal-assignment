@@ -40,7 +40,7 @@ An AI chatbot that answers questions about **DarGlobal** luxury developments and
 |---|---|
 | Scraping | Python, httpx, selectolax, Playwright (only for pages that need JavaScript rendering), trafilatura |
 | Data | Pydantic v2 schemas, JSONL snapshot |
-| Embeddings | fastembed (local, multilingual) |
+| Embeddings | fastembed, local: [EmbeddingGemma-300m](https://huggingface.co/google/embeddinggemma-300m) (multilingual) |
 | Vector search | Qdrant: hybrid dense + BM25 search with metadata filters |
 | LLM | Free OpenRouter models (`:free`), called through the OpenAI-compatible SDK |
 | Backend | FastAPI with Server-Sent Events streaming |
@@ -74,6 +74,29 @@ The scraped data is committed as JSONL in [`data/processed/`](data/processed/), 
 | `wasalt/areas.jsonl.gz` | 13,688 | Which property types Wasalt lists in each city and district |
 
 Personal data is excluded on purpose. Parsers copy only an allow-list of fields, and phone numbers, emails, and agent names are removed from free text.
+
+## Search quality
+
+Retrieval is measured, not eyeballed. The golden set in [`eval/golden.jsonl`](eval/golden.jsonl) has 39 questions: English and Arabic, DarGlobal and Wasalt, plus out-of-scope ones. Each question lists the records that correctly answer it. The held-out set in [`eval/golden_holdout.jsonl`](eval/golden_holdout.jsonl) has 12 more questions. They were written after tuning and never changed, so they show how the search does on questions it wasn't tuned for.
+
+| Embedding model (+ BM25, RRF) | Size | hit@5 | MRR | Arabic hit@5 |
+|---|---|---|---|---|
+| paraphrase-multilingual-MiniLM-L12-v2 | 0.2 GB | 0.86 | 0.71 | 0.33 |
+| multilingual-e5-large | 2.2 GB | 0.92 | 0.77 | 0.67 |
+| **EmbeddingGemma-300m** (chosen) | 1.2 GB | 0.92 | 0.80 | 0.67 |
+| **EmbeddingGemma-300m** + bilingual Wasalt summaries | 1.2 GB | **1.00** | **0.92** | **1.00** |
+| same, on the held-out set | | 0.92 | 0.89 | 1.00 |
+
+The first three rows are scored on the original version of the golden set; the bottom two are scored after the golden set's answer lists were completed. *hit@5* is the share of questions where a correct record appears in the top 5. *MRR* rewards ranking it higher. A median query takes about 50 ms on a laptop CPU.
+
+How the index is built:
+- **Chunks.** Each project becomes a fact card, a details chunk, and one chunk per FAQ. Articles are split into 200-word passages that keep their title. Wasalt's 62k listings go into SQLite for exact filters. The vector index gets generated summaries in English and Arabic: one per city and purpose, plus overall statistics.
+- **Search.** Semantic vectors and BM25 keyword search run together in Qdrant and are fused with reciprocal rank fusion. Results keep at most 2 chunks per record.
+
+```bash
+uv run python -m dgbot.ingestion     # build data/index from the snapshot (~6 min on CPU)
+uv run python -m dgbot.evaluation    # print hit@k / MRR on the golden set
+```
 
 ## Run locally
 
@@ -128,7 +151,7 @@ _More limitations will be added as they are found, each with its cause and impac
 - [x] Data collection: DarGlobal (460 pages)
 - [x] Data collection: Wasalt (public sitemaps + a small hand-saved sample)
 - [x] Cleaning, normalization, and the data snapshot ([`data/processed/`](data/processed/))
-- [ ] Hybrid retrieval and evaluation set
+- [x] Hybrid retrieval and evaluation set (hit@5 1.00 on the golden set, 0.92 on a held-out set)
 - [ ] RAG chat API with streaming and citations
 - [ ] Chat UI (English and Arabic, RTL layout)
 - [ ] Docker image

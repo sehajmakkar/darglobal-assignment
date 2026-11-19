@@ -48,17 +48,19 @@ _TYPE_PREFIXES: Final = (
 # Plausible built-up/plot area (sqm) per type, for repairing slugs that lost a decimal
 # point ("apartment-7021-sqm" is really 702.1 sqm — C-011).
 _AREA_BOUNDS: Final[dict[str, tuple[float, float]]] = {
-    "apartment": (15, 1_000),
-    "studio": (10, 200),
-    "room": (5, 200),
-    "floor": (40, 1_500),
-    "duplex": (60, 1_500),
-    "villa": (80, 5_000),
-    "chalet": (30, 10_000),
-    "rest house": (100, 50_000),
-    "building": (80, 50_000),
-    "land": (50, 1_000_000),
-    "farm": (500, 10_000_000),
+    # Realistic built-up / plot sizes. Tight on purpose: in the raw slugs ~33% of
+    # apartments read 10k-100k sqm (two dropped decimals) and ~20% read 500-1,000 (one).
+    "apartment": (20, 400),
+    "studio": (10, 150),
+    "room": (5, 150),
+    "floor": (40, 600),
+    "duplex": (60, 800),
+    "villa": (100, 1_500),
+    "chalet": (30, 5_000),
+    "rest house": (100, 10_000),
+    "building": (100, 5_000),
+    "land": (100, 5_000),
+    "farm": (500, 1_000_000),
 }
 
 _PRODUCT_PATH = re.compile(r"^/(?:en/)?property/(sale|rent)/(.+)-(\d+)$")
@@ -68,7 +70,10 @@ _AREA = re.compile(r"(?:^|-)(\d+)-sqm(?:-|$)")
 _BEDS = re.compile(r"(?:with-|^)(\d+)-bedrooms?(?:-|$)")
 _FACING = re.compile(r"facing-(north-east|north-west|south-east|south-west|north|south|east|west)")
 _STREET = re.compile(r"on-(\d+)m-width-street")
-_RIYADH_ZONE = re.compile(r"^(north|south|east|west|central)-riyadh$")
+# Riyadh is split into zones; Wasalt spells the centre both "central" and "center".
+_RIYADH_ZONE = re.compile(r"^(north|south|east|west|central|center)-riyadh(?:-(.+))?$")
+# Same city under two slugs.
+_CITY_ALIASES: Final = {"khobar": "al-khobar"}
 
 
 class ParseError(DgbotError):
@@ -209,15 +214,22 @@ def parse_category_url(url: str, cities: frozenset[str], scraped_at: datetime) -
     if not match:
         raise ParseError(f"not a category URL: {url}")
     type_slug, purpose_slug, location = match.groups()
-    city_slug = max(
-        (c for c in cities if location == c or location.startswith(c + "-")),
-        key=len,
-        default=location,
-    )
-    district_slug = location[len(city_slug) + 1 :] or None
-    city, zone = title_from_slug(city_slug), None
-    if zone_match := _RIYADH_ZONE.match(city_slug):
-        city, zone = "Riyadh", zone_match.group(1).capitalize()
+    zone: str | None = None
+    if zone_match := _RIYADH_ZONE.match(location):  # checked first: zones may lack a root page
+        city_slug, district_slug = "riyadh", zone_match.group(2)
+        zone = (
+            "Central"
+            if zone_match.group(1) in {"central", "center"}
+            else zone_match.group(1).title()
+        )
+    else:
+        city_slug = max(
+            (c for c in cities if location == c or location.startswith(c + "-")),
+            key=len,
+            default=location,
+        )
+        district_slug = location[len(city_slug) + 1 :] or None
+    city = title_from_slug(_CITY_ALIASES.get(city_slug, city_slug))
     return AreaCoverage(
         id=f"wasalt:area:{purpose_slug}:{type_slug}:{location}",
         source=Source.WASALT,

@@ -60,8 +60,9 @@ def test_property_type_and_furnishing(slug: str, kind: str, furnishing: str | No
     [
         (124, "apartment", (124.0, False)),
         (1077, "apartment", (107.7, True)),  # real page: "Apartment 107.7 SQM" (C-011)
-        (7021, "apartment", (702.1, True)),  # real page: "Apartment 702.1 SQM"
+        (12345, "apartment", (123.45, True)),  # two dropped decimals (~33% of apartments)
         (17524, "floor", (175.24, True)),
+        (20162, "villa", (201.62, True)),  # real page: "Villa 201.62 SQM"
         (5, "villa", (None, False)),  # nothing plausible → unknown, never a guess
         (None, "villa", (None, False)),
     ],
@@ -119,6 +120,11 @@ def test_city_detection_and_category_split() -> None:
         "North",
         "Al Yasmin",
     )
+
+    d = parse_category_url(
+        "https://wasalt.sa/en/villas-for-rent-in-center-riyadh-al-rabwah", cities, NOW
+    )
+    assert (d.city, d.zone, d.district) == ("Riyadh", "Central", "Al Rabwah")
 
     c = parse_category_url("https://wasalt.sa/en/farms-for-daily-rental-in-al-ula", cities, NOW)
     assert (c.purpose, c.city, c.district) == ("daily_rent", "Al Ula", None)

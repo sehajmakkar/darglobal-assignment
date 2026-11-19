@@ -1,0 +1,480 @@
+{
+  "overall": {
+    "n": 36,
+    "hit_at": {
+      "1": 0.8611111111111112,
+      "3": 0.9722222222222222,
+      "5": 1.0
+    },
+    "mrr": 0.9236111111111112
+  },
+  "by_group": {
+    "darglobal": {
+      "n": 25,
+      "hit_at": {
+        "1": 0.84,
+        "3": 0.96,
+        "5": 1.0
+      },
+      "mrr": 0.91
+    },
+    "lang:ar": {
+      "n": 6,
+      "hit_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0
+    },
+    "lang:en": {
+      "n": 30,
+      "hit_at": {
+        "1": 0.8333333333333334,
+        "3": 0.9666666666666667,
+        "5": 1.0
+      },
+      "mrr": 0.9083333333333333
+    },
+    "wasalt": {
+      "n": 11,
+      "hit_at": {
+        "1": 0.9090909090909091,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 0.9545454545454546
+    }
+  },
+  "items": [
+    {
+      "id": "dg-astera",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:blog:blog/the-astera-redefining-luxury-living-with-aston-martin-interiors",
+        "darglobal:project:the-astera",
+        "darglobal:blog:blog/unveiling the-astera-where-luxury-real-estate-meets-automotive-excellence",
+        "darglobal:blog:blog/discover-the-luxury-and-leisure-of-al-marjan-island-uae",
+        "darglobal:press:press/darglobal-awards-main-contract-astera-aston-martin-gulf-asia"
+      ]
+    },
+    {
+      "id": "dg-pagani",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:partner:partners/pagani",
+        "darglobal:project:davinci-tower-by-pagani",
+        "darglobal:blog:blog/elevate-your-lifestyle-the-da-vinci-tower-interiors-by-pagani",
+        "darglobal:press:press/dar-al-arkan-and-pagani-automobili-give-customers-a-glimpse-of-the-worlds-first-ever-pagani-inspired-living-space",
+        "darglobal:press:press/dar-al-arkan-teams-with-pagani-automobili-to-unveil-an-ultra-exclusive-residential-tower-in-dubai"
+      ]
+    },
+    {
+      "id": "dg-dg1",
+      "rank": 2,
+      "retrieved": [
+        "darglobal:blog:blog/discover-dg1-residences-luxury-living-in-the-heart-of-dubai",
+        "darglobal:project:dg1",
+        "darglobal:blog:blog/investment-spotlight-assessing-the-viability-of-dubai-real-estate-in-2024",
+        "darglobal:blog:blog/unwind-and-connect-at-dg1-residences-a-lifestyle-beyond-compare",
+        "darglobal:blog:blog/luxury-apartments-in-dubai-the-epitome-of-elevated-living-and-astute-investment"
+      ]
+    },
+    {
+      "id": "dg-w-amenities",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:w-residences",
+        "darglobal:press:press/dar-al-arkan-reveals-w-residences-dubai-downtown-overlooking-dubais-burj-khalifa-and-dubai-fountain",
+        "darglobal:blog:blog/golden-visa-countries-for-real-estate-roi",
+        "darglobal:partner:partners/w-hotels",
+        "darglobal:blog:blog/luxury-living-and-smart-investments-exploring-dubais-real-estate-landscape"
+      ]
+    },
+    {
+      "id": "dg-spain",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:exclusive-plots",
+        "darglobal:press:press/dar-globals-agents-event-paves-the-way-for-a-spectacular-debut-in-spanish-real-estate",
+        "darglobal:project:tierra-viva",
+        "darglobal:project:marea",
+        "darglobal:project:invest-crypto"
+      ]
+    },
+    {
+      "id": "dg-les-vagues",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:les-vagues",
+        "darglobal:press:press/dar-al-arkan-global-launches-sales-of-the-most-premium-residential-address-in-qatar-les-vagues-by-elie-saab-with-views-of-lusail-skyline-and-the-sea-at-qetaifan-island-north",
+        "darglobal:blog:blog/les-vagues-where-couture-meets-comfort-elie-saabs-visionary-real-estate-venture-in-qatar-ues-elie-saabs-visionary-real-estate-venture-in-qatar",
+        "darglobal:blog:blog/les-vagues-by-elie-saab-a-masterpiece-of-coastal-luxury-and-elegance-in-qatar",
+        "darglobal:blog:blog/cost-of-living-in-qatar-and-impact-on-real-estate-market"
+      ]
+    },
+    {
+      "id": "dg-trump-jeddah",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:trump-tower-jeddah",
+        "darglobal:press:press/darglobal-launches-trump-plaza-jeddah-second-collaboration",
+        "darglobal:blog:blog/trump-tower-jeddah-a-legacy-of-prestige-and-power",
+        "darglobal:press:press/dar-global-and-the-trump-organization-expand-collaboration-with-the-launch-of-sar-2-billion-trump-tower-to-tranform-jeddah-skyline",
+        "darglobal:press:press/darglobal-partners-with-wasalt-to-advertise-trump-tower-jeddah"
+      ]
+    },
+    {
+      "id": "dg-albert-hall",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:one-of-one/the-albert-hall-mansion",
+        "darglobal:section:one-of-one",
+        "darglobal:section:blog",
+        "darglobal:section:projects",
+        "darglobal:blog:blog/how-to-buy-property-in-london"
+      ]
+    },
+    {
+      "id": "dg-elie-saab",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:partner:partners/elie-saab",
+        "darglobal:blog:blog/real-estate-market-in-middle-east",
+        "darglobal:press:press/dar-al-arkan-and-qetaifan-projects-unveil-premium-sea-front-residences-with-interiors-designed-by-elie-saab-at-expo-2020-dubai",
+        "darglobal:blog:blog/our-vision-for-the-future-whats-next-for-real-estate-development",
+        "darglobal:press:press/dar-al-arkan-and-qetaifan-projects-unveil-premium-sea-front-residences-with-interiors-designed-by-elie-saab-in-qetaifan-island-north-qatar"
+      ]
+    },
+    {
+      "id": "dg-lamborghini",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:partner:partners/lamborghini",
+        "darglobal:blog:blog/your-dream-villa-awaits-exclusive-luxury-villas-for-sale-in-spain",
+        "darglobal:project:one-of-one/painite-villas-design-inspired-by-automobili-lamborghini",
+        "darglobal:blog:blog/market-insights-luxury-villas-for-sale-in-marbella-a-deep-dive-into-the-trends-and-opportunities",
+        "darglobal:press:press/dar-global-lamborghini-lounge-porto-cervo-summer"
+      ]
+    },
+    {
+      "id": "dg-revenue",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:press:press/dar-global-delivers-66-percent-revenue-growth-hy-2026-portfolio-gdv-reaches-23-billion",
+        "darglobal:section:home",
+        "darglobal:press:press/darglobal-five-years-global-expansion-23bn-development-portfolio-future-vision",
+        "darglobal:blog:blog/ksa-real-estate-market-boom-or-bubble",
+        "darglobal:section:press"
+      ]
+    },
+    {
+      "id": "dg-crypto",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:invest-crypto",
+        "darglobal:blog:blog/insignia-cards-limited-and-darglobal-unite-to-unlock-extraordinary-possibilities",
+        "darglobal:company:tokenization",
+        "darglobal:blog:blog/can-foreigners-buy-property-uk-complete-guide",
+        "darglobal:company:faq"
+      ]
+    },
+    {
+      "id": "dg-la-collina",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:la-collina",
+        "darglobal:project:marea",
+        "darglobal:press:press/darglobal-joins-hands-with-spanish-council-lighting-up-abu-dhabi-in-celebratory-colors-of-spains-national-day",
+        "darglobal:project:tierra-viva",
+        "darglobal:blog:blog/marbella-beyond-the-beach-a-cultural-and-culinary-journey-from-your-luxury-villa"
+      ]
+    },
+    {
+      "id": "dg-missoni",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:urban-oasis-by-missoni",
+        "darglobal:press:press/dar-al-arkan-teams-with-missoni-to-deliver-the-exclusive-urban-oasis-water-front-residential-tower-in-dubai",
+        "darglobal:press:press/dar-al-arkan-tops-out-its-urban-oasis-by-missoni-residential-tower-in-dubai-at-34-stories",
+        "darglobal:partner:partners/missoni",
+        "darglobal:blog:blog/investment-spotlight-assessing-the-viability-of-dubai-real-estate-in-2024"
+      ]
+    },
+    {
+      "id": "dg-saudi-residency",
+      "rank": 4,
+      "retrieved": [
+        "darglobal:section:projects",
+        "darglobal:blog:blog/can-foreigners-buy-property-in-saudi-arabia",
+        "darglobal:section:blog",
+        "darglobal:blog:blog/real-estate-investment-international-residency",
+        "darglobal:blog:blog/investment-in-saudi-real-estate"
+      ]
+    },
+    {
+      "id": "dg-broker",
+      "rank": 2,
+      "retrieved": [
+        "darglobal:blog:blog/ why-our-broker-programs-are-the-best-in-the-business",
+        "darglobal:company:become-a-broker",
+        "darglobal:blog:blog/plano-group-top-seller-aida-oman-darglobal-success-story",
+        "darglobal:company:win-a-trip-to-dubai",
+        "darglobal:company:become-an-agent"
+      ]
+    },
+    {
+      "id": "dg-neptune",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:neptune",
+        "darglobal:blog:blog/experience-unmatched-luxury-at-neptune-by-mouawad-villas-in-riyadh",
+        "darglobal:partner:partners/mouawad",
+        "darglobal:blog:blog/top-luxury-gated-communities",
+        "darglobal:blog:blog/impact-of-tourism-on-saudi-arabia-real-estate-market"
+      ]
+    },
+    {
+      "id": "dg-trump-golf-oman",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:blog:blog/the-trump-golf-villas-luxury-living-with-a-view-at-aida-oman",
+        "darglobal:project:aida-trump-villas",
+        "darglobal:blog:blog/oman's-luxury-villas-for-sale-an-investment-overview-for-the-discerning-buyer",
+        "darglobal:blog:blog/why-luxury-villas-in-oman-are-your-next-dream-destination",
+        "darglobal:blog:blog/exclusive-lifestyle-features-elevating-luxury-homes-with-private-amenities"
+      ]
+    },
+    {
+      "id": "dg-aida",
+      "rank": 2,
+      "retrieved": [
+        "darglobal:blog:blog/the-ultimate-muscat-oman-luxury-villa-buying-experience",
+        "darglobal:company:aida-360",
+        "darglobal:blog:blog/the-booming-real-estate-market-in-oman-a-lucrative-opportunity-for-investors-and-homeowners",
+        "darglobal:project:invest-in-aida",
+        "darglobal:project:marriott-residences-aida-oman"
+      ]
+    },
+    {
+      "id": "dg-oman-foreign",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:blog:blog/buying-property-in-oman-complete-guide",
+        "darglobal:blog:blog/investing-in-oman-opportunities-and-benefits",
+        "darglobal:blog:blog/property-investment-in-oman",
+        "darglobal:blog:blog/buying-property-in-oman-trends-predictions",
+        "darglobal:blog:blog/oman-vision-2040"
+      ]
+    },
+    {
+      "id": "dg-about",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:company:about",
+        "darglobal:company:faq",
+        "darglobal:blog:blog/what-makes-great-luxury-real-estate-developer-key-traits-industry-leaders",
+        "darglobal:section:home",
+        "darglobal:blog:blog/the-ultimate-muscat-oman-luxury-villa-buying-experience"
+      ]
+    },
+    {
+      "id": "dg-tokenization",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:company:tokenization",
+        "darglobal:section:press",
+        "darglobal:section:home",
+        "darglobal:blog:blog/proptech-and-impact-on-real-estate-market",
+        "darglobal:project:invest-crypto"
+      ]
+    },
+    {
+      "id": "ws-overview",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:overview",
+        "wasalt:summary:type:sale:building",
+        "wasalt:summary:type:sale:rest-house",
+        "wasalt:summary:city:dakhnh:sale",
+        "wasalt:summary:city:tima:sale"
+      ]
+    },
+    {
+      "id": "ws-riyadh-rent",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:city:riyadh:rent",
+        "wasalt:listing:5885060",
+        "wasalt:summary:city:riyadh:rent:1",
+        "wasalt:listing:5893725",
+        "wasalt:summary:city:riyadh:rent:2"
+      ]
+    },
+    {
+      "id": "ws-khobar-villas",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:city:al-khobar:sale",
+        "darglobal:section:projects",
+        "wasalt:summary:city:al-khobar:daily_rent",
+        "wasalt:summary:overview",
+        "wasalt:summary:city:al-khobar:rent"
+      ]
+    },
+    {
+      "id": "ws-apartment-size",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:type:sale:apartment",
+        "wasalt:summary:overview",
+        "wasalt:summary:type:rent:apartment",
+        "wasalt:summary:type:sale:building",
+        "wasalt:summary:type:sale:floor"
+      ]
+    },
+    {
+      "id": "ws-chalets",
+      "rank": 2,
+      "retrieved": [
+        "wasalt:summary:city:saudi-arabia:daily_rent",
+        "wasalt:summary:type:daily_rent:chalet",
+        "wasalt:summary:city:makkah:daily_rent:1",
+        "wasalt:summary:city:taif:daily_rent:1",
+        "wasalt:summary:city:riyadh:daily_rent:3"
+      ]
+    },
+    {
+      "id": "ws-mahdiyah-price",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:listing:5857508",
+        "wasalt:listing:5834772",
+        "wasalt:listing:5929494",
+        "wasalt:listing:5878665",
+        "wasalt:listing:5834772:ar"
+      ]
+    },
+    {
+      "id": "ws-arid-land",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:listing:5888646",
+        "wasalt:listing:5877630",
+        "wasalt:summary:city:riyadh:sale",
+        "wasalt:summary:city:riyadh:sale:1",
+        "wasalt:summary:city:riyadh:sale:2"
+      ]
+    },
+    {
+      "id": "ws-jeddah-districts",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:city:jeddah:sale:2",
+        "wasalt:summary:city:jeddah:sale",
+        "wasalt:summary:city:jeddah:sale:1",
+        "wasalt:summary:city:jeddah:daily_rent:2",
+        "wasalt:summary:city:jazan:sale"
+      ]
+    },
+    {
+      "id": "ar-astera",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:press:press/darglobal-awards-main-contract-astera-aston-martin-gulf-asia",
+        "darglobal:project:invest-crypto",
+        "darglobal:project:the-astera",
+        "darglobal:project:exclusive-plots",
+        "darglobal:blog:blog/the-astera-redefining-luxury-living-with-aston-martin-interiors"
+      ]
+    },
+    {
+      "id": "ar-oman",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:aida-coastal-investment-villas",
+        "darglobal:project:aida-trump-international-apartments",
+        "darglobal:project:invest-crypto",
+        "darglobal:project:invest-in-aida",
+        "darglobal:project:exclusive-plots"
+      ]
+    },
+    {
+      "id": "ar-crypto",
+      "rank": 1,
+      "retrieved": [
+        "darglobal:project:invest-crypto",
+        "darglobal:project:exclusive-plots",
+        "darglobal:company:faq",
+        "darglobal:project:aida-trump-international-apartments",
+        "darglobal:company:tokenization"
+      ]
+    },
+    {
+      "id": "ar-riyadh-rent",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:city:riyadh:rent",
+        "wasalt:summary:city:riyadh:daily_rent:3",
+        "wasalt:summary:city:riyadh:rent:2",
+        "wasalt:summary:city:riyadh:rent:1",
+        "wasalt:summary:city:riyadh:daily_rent:2"
+      ]
+    },
+    {
+      "id": "ar-jeddah-villas",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:summary:city:jeddah:sale:1",
+        "wasalt:summary:city:jeddah:sale:2",
+        "wasalt:summary:city:jeddah:sale",
+        "wasalt:summary:city:jeddah:daily_rent:2",
+        "wasalt:listing:5855568:ar"
+      ]
+    },
+    {
+      "id": "ar-jeddah-flat-price",
+      "rank": 1,
+      "retrieved": [
+        "wasalt:listing:5855568:ar",
+        "wasalt:listing:5855568",
+        "wasalt:listing:5903169:ar",
+        "wasalt:listing:5834772:ar",
+        "wasalt:listing:5874277"
+      ]
+    },
+    {
+      "id": "oos-weather",
+      "rank": null,
+      "retrieved": [
+        "darglobal:blog:blog/real-estate-forecast-next-5-years-dubai",
+        "darglobal:blog:blog/ksa-real-estate-market-boom-or-bubble",
+        "darglobal:blog:blog/where-to-invest-money-in-uae",
+        "darglobal:blog:blog/creating-luxury-living-beyond-the-ordinary",
+        "darglobal:blog:blog/dubai-2040-smart-sustainable-city-roadmap"
+      ]
+    },
+    {
+      "id": "oos-football",
+      "rank": null,
+      "retrieved": [
+        "darglobal:project:les-vagues",
+        "darglobal:blog:blog/unveiling-qatars-luxurious-investment-oasis-your-gateway-to-opulence",
+        "darglobal:blog:blog/qatars-vision-2030-opportunities-and-advantages-for-real-estate-investor",
+        "darglobal:blog:blog/investing-in-qatar-is-now-the-right-time-to-enter-the-real-estate-market",
+        "darglobal:blog:blog/cost-of-living-in-qatar-and-impact-on-real-estate-market"
+      ]
+    },
+    {
+      "id": "oos-code",
+      "rank": null,
+      "retrieved": [
+        "wasalt:summary:city:sibya:sale",
+        "darglobal:blog:blog/types-of-lighting-in-interior-design",
+        "wasalt:summary:city:baysh:rent",
+        "wasalt:summary:city:al-qurayyat:rent",
+        "darglobal:blog:blog/property-transfer-vs-title-deed-differences"
+      ]
+    }
+  ]
+}
