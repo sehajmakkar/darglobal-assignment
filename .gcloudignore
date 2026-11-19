@@ -1,0 +1,6 @@
+# What `gcloud run deploy --source .` must NOT upload to Cloud Build.
+# Same rules as the Docker build context, plus gcloud/git metadata.
+.gcloudignore
+.git
+.gitignore
+#!include:.dockerignore

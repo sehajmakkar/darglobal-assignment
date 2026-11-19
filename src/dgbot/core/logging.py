@@ -9,7 +9,8 @@ from datetime import UTC, datetime
 
 from dgbot.core.config import Settings
 
-_RESERVED = set(vars(logging.LogRecord("", 0, "", 0, "", None, None)))
+# Standard LogRecord attributes, plus uvicorn's ANSI-coloured duplicate of the message.
+_RESERVED = set(vars(logging.LogRecord("", 0, "", 0, "", None, None))) | {"color_message"}
 
 
 class JsonFormatter(logging.Formatter):

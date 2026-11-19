@@ -2,9 +2,9 @@
 
 An AI chatbot that answers questions about **DarGlobal** luxury developments and **Wasalt** property listings. It uses data scraped from both public websites and a free LLM served through [OpenRouter](https://openrouter.ai), and it runs as a single Docker container.
 
-> **Status:** 🚧 In development. The live demo URL will appear here once it is deployed.
+> **Status:** 🚧 In development. The deployment pipeline is live; the chatbot itself is being built.
 >
-> **Live demo:** _coming soon_
+> **Live URL:** https://dgbot-1023394202328.europe-west1.run.app (currently a placeholder page and health check)
 
 ---
 
@@ -45,7 +45,7 @@ An AI chatbot that answers questions about **DarGlobal** luxury developments and
 | LLM | Free OpenRouter models (`:free`), called through the OpenAI-compatible SDK |
 | Backend | FastAPI with Server-Sent Events streaming |
 | Frontend | React, Vite, TypeScript, Tailwind |
-| Deployment | Docker (multi-stage build), Hugging Face Spaces, GitHub Actions |
+| Deployment | Docker (multi-stage build), Google Cloud Run, GitHub Actions |
 
 ## Data sources & scraping policy
 
@@ -61,16 +61,23 @@ The scraper follows these rules:
 
 ## Run locally
 
-> These instructions describe the target setup. They will be confirmed as each part is built.
+> The app currently serves a placeholder page and a health check while the chatbot is built.
+
+**With Docker:**
 
 ```bash
-# 1. Configure
 cp .env.example .env            # add OPENROUTER_API_KEY
-
-# 2. Run with Docker
 docker build -t dg-assistant .
 docker run -p 7860:7860 --env-file .env dg-assistant
-# open http://localhost:7860
+# open http://localhost:7860  ·  API docs: http://localhost:7860/api/docs
+```
+
+**Without Docker** (needs [uv](https://docs.astral.sh/uv/)):
+
+```bash
+uv sync
+uv run python -m dgbot.api      # http://localhost:7860
+uv run pytest                   # unit tests (no network, no LLM quota used)
 ```
 
 ## Project structure

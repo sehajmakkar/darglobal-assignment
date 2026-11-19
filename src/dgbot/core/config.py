@@ -8,6 +8,7 @@ configuration explicit and makes tests trivial to isolate.
 from __future__ import annotations
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Annotated, Literal
 
 from pydantic import AliasChoices, Field, SecretStr, field_validator
@@ -28,6 +29,10 @@ class Settings(BaseSettings):
     env: Literal["dev", "test", "prod"] = "dev"
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     port: int = Field(default=7860, validation_alias="PORT")
+    host: str = "0.0.0.0"  # the container must listen on all interfaces
+    # Directory served at "/". Defaults to the bundled placeholder page; Phase 5 points it
+    # at the built React app (frontend/dist).
+    static_dir: Path = Path(__file__).resolve().parent.parent / "api" / "static"
 
     # ── OpenRouter ───────────────────────────────────────────────────
     # One key (OPENROUTER_API_KEY) or a comma-separated pool (OPENROUTER_API_KEYS);

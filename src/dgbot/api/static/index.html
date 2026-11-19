@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DarGlobal × Wasalt Assistant</title>
+    <style>
+      :root { color-scheme: light dark; --bg: #f7f5f0; --fg: #1d1b16; --muted: #6b665c; --accent: #9a7b4f; }
+      @media (prefers-color-scheme: dark) { :root { --bg: #15140f; --fg: #ece7dc; --muted: #a39d90; --accent: #c9a56f; } }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--fg);
+             font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+      main { max-width: 34rem; padding: 2rem 1rem; }
+      h1 { font-size: 1.6rem; margin: 0 0 .5rem; }
+      p { color: var(--muted); margin: .4rem 0; }
+      code { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>DarGlobal × Wasalt Assistant</h1>
+      <p>The chatbot is being built. This placeholder confirms the deployment pipeline works.</p>
+      <p>Status: <code id="status">checking…</code></p>
+    </main>
+    <script>
+      fetch("/api/health")
+        .then((r) => r.json())
+        .then((h) => (document.getElementById("status").textContent = `${h.status} · v${h.version}`))
+        .catch(() => (document.getElementById("status").textContent = "unreachable"));
+    </script>
+  </body>
+</html>

@@ -5,13 +5,16 @@ description = "RAG chatbot over public DarGlobal and Wasalt real-estate data, se
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "fastapi>=0.165.0",
     "openai>=3.55.1",
     "pydantic>=2.14.4",
     "pydantic-settings>=2.16.3",
+    "uvicorn[standard]>=0.54.0",
 ]
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "mypy>=2.4.1",
     "pytest>=9.2.0",
     "pytest-asyncio>=1.5.0",
@@ -51,6 +54,7 @@ mypy_path = "src"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 addopts = "-ra --strict-markers -m 'not live'"
 markers = [
     "live: hits real external services (OpenRouter, source sites). Uses quota. Opt-in: pytest -m live",

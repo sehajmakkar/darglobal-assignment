@@ -1,0 +1,30 @@
+# Keep the build context small and secret-free.
+.git
+.github
+.env
+.env.*
+!.env.example
+.venv
+**/__pycache__
+**/*.py[cod]
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.DS_Store
+
+# Private docs + scratch (never in the image either)
+CLAUDE.md
+plan.md
+decisions.md
+challenges.md
+notes/
+.claude/
+
+# Raw scraped data, caches, local indexes
+data/raw/
+data/cache/
+data/index/
+
+# Not needed at runtime
+tests/
+frontend/node_modules/
