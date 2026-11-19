@@ -31,6 +31,7 @@ from dgbot.domain.models import (
     Project,
     Source,
 )
+from dgbot.domain.places import CITY_AR
 
 _PARAGRAPH_SPLIT = re.compile(r"\n\s*\n")
 _PURPOSE_LABEL: Final = {"sale": "for sale", "rent": "for rent", "daily_rent": "for daily rental"}
@@ -56,35 +57,6 @@ _TYPE_AR: Final = {
     "farm": "مزارع",
     "commercial property": "عقارات تجارية",
     "property": "عقارات",
-}
-_CITY_AR: Final = {
-    "Riyadh": "الرياض",
-    "Jeddah": "جدة",
-    "Makkah": "مكة المكرمة",
-    "Madinah": "المدينة المنورة",
-    "Dammam": "الدمام",
-    "Al Khobar": "الخبر",
-    "Taif": "الطائف",
-    "Buraidah": "بريدة",
-    "Al Ahsa": "الأحساء",
-    "Unayzah": "عنيزة",
-    "Abha": "أبها",
-    "Khamis Mushayt": "خميس مشيط",
-    "Tabuk": "تبوك",
-    "Hail": "حائل",
-    "Jazan": "جازان",
-    "Najran": "نجران",
-    "Al Kharj": "الخرج",
-    "Ad Diriyah": "الدرعية",
-    "Arar": "عرعر",
-    "Hafar Al Batin": "حفر الباطن",
-    "Al Qatif": "القطيف",
-    "Dhahran": "الظهران",
-    "Al Jubail": "الجبيل",
-    "Yanbu": "ينبع",
-    "Buqayq": "بقيق",
-    "Al Khafji": "الخفجي",
-    "Al Oyun": "العيون",
 }
 
 
@@ -463,7 +435,7 @@ def wasalt_summaries(listings: Sequence[Listing], areas: Sequence[AreaCoverage])
                 + (f" across {len(districts)} districts" if districts else "")
                 + ".",
             ]
-            city_ar = _CITY_AR.get(city)
+            city_ar = CITY_AR.get(city)
             types_ar = "، ".join(dict.fromkeys(_TYPE_AR.get(t, t) for t, _ in types.most_common(6)))
             lines.append(
                 f"بالعربية: عقارات {_PURPOSE_AR[area_purpose]} في {city_ar or city} على {WASALT_AR}"

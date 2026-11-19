@@ -44,14 +44,22 @@ class Settings(BaseSettings):
     )
     openrouter_base_url: str = "https://openrouter.ai/api/v1"
     # Primary model first, then fallbacks (D-010). Model ids are config, never literals in code.
+    # Order from live endpoint status (D-043): Gemma's free endpoint reported no uptime,
+    # Nvidia's free endpoints 100%. OpenRouter tries them server-side in this order.
     llm_models: Annotated[list[str], NoDecode] = Field(
         default_factory=lambda: [
-            "google/gemma-4-31b-it:free",
             "nvidia/nemotron-3.5-super-vl:free",
+            "nvidia/nemotron-3-ultra-550b-a55b:free",
+            "google/gemma-4-31b-it:free",
             "openrouter/free",
         ]
     )
     llm_timeout_s: float = Field(default=60.0, gt=0)
+    # Reasoning models spend tokens thinking before answering (C-006): generous budget,
+    # low effort, reasoning text excluded from the stream.
+    llm_max_tokens: int = Field(default=1_500, ge=200, le=8_000)
+    llm_reasoning_effort: Literal["low", "medium", "high"] = "low"
+    llm_temperature: float = Field(default=0.2, ge=0, le=1)
     # Sent as HTTP-Referer / X-Title so OpenRouter can attribute traffic to the app.
     app_url: str = "https://github.com/sehajmakkar/darglobal-assignment"
     app_title: str = "DarGlobal x Wasalt Assistant"
@@ -83,6 +91,13 @@ class Settings(BaseSettings):
     chunk_overlap_words: int = Field(default=40, ge=0, le=200)
     retrieval_top_k: int = Field(default=8, ge=1, le=50)
     retrieval_prefetch_k: int = Field(default=40, ge=5, le=200)  # per branch, before fusion
+
+    # ── Chat API (Phase 4) ───────────────────────────────────────────
+    chat_sources_k: int = Field(default=8, ge=1, le=20)  # chunks retrieved per question
+    chat_max_context_words: int = Field(default=1_800, ge=200, le=8_000)
+    # Per client IP; protects the 50/day free quota (D-015). 0 disables a limit.
+    rate_limit_per_minute: int = Field(default=6, ge=0)
+    rate_limit_per_day: int = Field(default=40, ge=0)
 
     @field_validator("openrouter_api_keys", "llm_models", mode="before")
     @classmethod

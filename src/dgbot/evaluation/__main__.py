@@ -2,6 +2,7 @@
 
     uv run python -m dgbot.evaluation                                  # Settings' index/model
     uv run python -m dgbot.evaluation --index-dir data/index/e5-large  # a bake-off variant
+    uv run python -m dgbot.evaluation --answers --limit 10             # LLM answers: uses quota!
 
 The embedding model is read from the index's `index.json`, so queries are always embedded
 with the same model as the documents.
@@ -14,9 +15,10 @@ import json
 import sys
 from pathlib import Path
 
-from dgbot.core.config import get_settings
+from dgbot.core.config import Settings, get_settings
 from dgbot.core.logging import configure_logging
 from dgbot.evaluation.retrieval import (
+    GoldenItem,
     evaluate,
     format_report,
     load_golden,
@@ -35,6 +37,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--index-dir", type=Path, default=settings.index_dir)
     parser.add_argument("--golden", type=Path, default=Path("eval/golden.jsonl"))
     parser.add_argument("--out", type=Path, default=None, help="write per-question JSON here")
+    parser.add_argument("--answers", action="store_true", help="evaluate full LLM answers")
+    parser.add_argument("--limit", type=int, default=None, help="answer eval: max questions")
     args = parser.parse_args(argv)
     configure_logging(settings)
 
@@ -57,12 +61,48 @@ def main(argv: list[str] | None = None) -> int:
         print("Golden set references records that are not in the index:\n  " + "\n  ".join(bad))
         return 2
 
+    if args.answers:
+        return _answers(settings, items[: args.limit] if args.limit else items, store, args.out)
+
     report = evaluate(retriever, items)
     print(format_report(report, f"{manifest['embedding_model']} ({manifest['chunks']} chunks)"))
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(to_json(report) + "\n", encoding="utf-8")
     store.close()
+    return 0
+
+
+def _answers(
+    settings: Settings, items: list[GoldenItem], store: QdrantStore, out: Path | None
+) -> int:
+    import asyncio
+
+    from dgbot.api.dependencies import build_runtime
+    from dgbot.evaluation.answers import evaluate_answers, summarize
+
+    store.close()  # the runtime opens its own client on the same index directory
+    print(f"Answer eval: {len(items)} LLM requests (free quota: 50/day).")
+    runtime = build_runtime(settings)
+    try:
+        results = asyncio.run(evaluate_answers(runtime.chat, items))
+    finally:
+        runtime.close()
+    print(summarize(results))
+    if out:
+        rows = [
+            {
+                "id": r.item.id,
+                "question": r.item.question,
+                "model": r.model,
+                "error": r.error,
+                "checks": r.checks,
+                "answer": r.answer,
+            }
+            for r in results
+        ]
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(rows, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return 0
 
 

@@ -98,6 +98,37 @@ uv run python -m dgbot.ingestion     # build data/index from the snapshot (~6 mi
 uv run python -m dgbot.evaluation    # print hit@k / MRR on the golden set
 ```
 
+## Chat API
+
+`POST /api/chat` answers one question and streams the reply as Server-Sent Events:
+
+```bash
+curl -N -X POST http://localhost:7860/api/chat \
+  -H 'content-type: application/json' \
+  -d '{"message": "What is The Astera and where is it?"}'
+```
+
+The stream sends three kinds of event. `sources` comes first, with numbered source cards, so the UI can show them before the answer starts. Then `token` events carry the answer text. A final `done` carries the full answer, which sources were cited, the model that answered, and the latency. If something fails, an `error` event replaces `done`. Send `"stream": false` to get the same answer as plain JSON. `GET /api/health` reports whether the index and model are loaded. Interactive API docs are at `/api/docs`.
+
+How a question is answered:
+- **One LLM call per question.** Follow-up questions reuse the previous question for search. Structured Wasalt questions, such as "3-bed villas for rent in Riyadh" or "فلل للبيع في جدة", are parsed without the LLM and answered with an exact SQLite lookup, which becomes source [1]. This matters because free OpenRouter models are limited to 50 requests a day.
+- **Grounded and cited.** The model answers only from the numbered sources and cites them as `[n]`. Citations to sources that don't exist are removed.
+- **Guardrails.** Each IP address is rate-limited. Repeated questions are served from a cache without calling the LLM. Inputs are capped in length. If the daily quota runs out or a model is busy, the bot says so politely in English or Arabic instead of failing.
+
+### Answer quality
+
+A 12-question sample covered English and Arabic, DarGlobal and Wasalt, and one out-of-scope question. It was answered live by `nvidia/nemotron-3.5-super-vl:free` in about 6.5 s per answer:
+
+| Check | Result |
+|---|---|
+| Cites a correct source | 11/11 |
+| Replies in the question's language | 12/12 |
+| No invented DarGlobal unit prices | 6/6 |
+| Politely declines off-topic questions | 1/1 |
+| Facts correct on manual review | 12/12 |
+
+The questions are in [`eval/answers_sample.jsonl`](eval/answers_sample.jsonl), and the answers are in [`eval/results/answers-sample.json`](eval/results/answers-sample.json).
+
 ## Run locally
 
 > The app currently serves a placeholder page and a health check while the chatbot is built.
@@ -152,7 +183,7 @@ _More limitations will be added as they are found, each with its cause and impac
 - [x] Data collection: Wasalt (public sitemaps + a small hand-saved sample)
 - [x] Cleaning, normalization, and the data snapshot ([`data/processed/`](data/processed/))
 - [x] Hybrid retrieval and evaluation set (hit@5 1.00 on the golden set, 0.92 on a held-out set)
-- [ ] RAG chat API with streaming and citations
+- [x] RAG chat API with streaming and citations
 - [ ] Chat UI (English and Arabic, RTL layout)
 - [ ] Docker image
 - [ ] Public deployment and CI/CD

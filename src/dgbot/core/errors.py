@@ -23,6 +23,18 @@ class FetchError(DgbotError):
         self.reason = reason
 
 
+class LLMError(DgbotError):
+    """Base for LLM-provider failures; the API maps these to user-facing messages."""
+
+
+class LLMQuotaExceededError(LLMError):
+    """Every configured key hit the provider's daily/rate limit (D-015)."""
+
+
+class LLMUnavailableError(LLMError):
+    """No model produced an answer (timeouts, provider errors, empty replies)."""
+
+
 class SourceBlockedError(DgbotError):
     """A source site refused access (bot protection, 403, robots.txt disallow).
 

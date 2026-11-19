@@ -1,0 +1,140 @@
+[
+  {
+    "id": "dg-astera",
+    "question": "What is The Astera?",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true,
+      "no_dg_price": false
+    },
+    "answer": "The Astera is a luxury residential development by DarGlobal on Al Marjan Island in Ras Al Khaimah, UAE, featuring interiors by Aston Martin—Aston Martin’s first real-estate interior design project in the Middle East [1][5]. It comprises luxury apartments and villas with direct beach access and Arabian Gulf views [1][4][5]. Amenities include an infinity pool, spa, sauna, pool bar, fitness centre, indoor cinema, yoga lawn, multipurpose hall, children’s play area, and 24/7 security; beach villas offer private shoreline access [2]. The project is under development with handover scheduled for December 2028 [2], and has a gross development value of AED 900 million (£200 million) [5]."
+  },
+  {
+    "id": "dg-pagani",
+    "question": "Which DarGlobal tower has interiors by Pagani?",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true,
+      "no_dg_price": true
+    },
+    "answer": "The DarGlobal tower with interiors by Pagani is the **Da Vinci Tower** (also written as DaVinci Tower) in Dubai [1][2][6]. It is described as the world’s first residential development with interiors designed by Pagani Automobili [2]."
+  },
+  {
+    "id": "dg-revenue",
+    "question": "How much revenue growth did DarGlobal report for the first half of 2026?",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true,
+      "no_dg_price": false
+    },
+    "answer": "DarGlobal reported 66% revenue growth for the first half of 2026 (HY 2026), with revenue rising to US$258.0 million from US$155.4 million in HY 2025 [1]."
+  },
+  {
+    "id": "dg-crypto",
+    "question": "Can I buy a DarGlobal property with cryptocurrency?",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true,
+      "no_dg_price": true
+    },
+    "answer": "Yes. DarGlobal states you can invest in its real estate projects in Oman and Spain using cryptocurrency through a simple and secure process [1]. Its partnership with Insignia Cards Limited also includes cryptocurrency payment options for property acquisitions [2].\n\nDarGlobal does not publish prices for its projects [1]; to proceed, register interest or contact DarGlobal through darglobal.co.uk."
+  },
+  {
+    "id": "dg-saudi-residency",
+    "question": "How can I get Saudi residency by investing in property?",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true,
+      "no_dg_price": false
+    },
+    "answer": "You can qualify for Saudi residency (Golden Visa) by investing at least SAR 4 million in eligible Saudi real estate, which grants 10-year residency and business benefits [1][4]. Typical requirements include proving the source of funds, a clean criminal record, health coverage, and financial viability such as bank statements or tax returns [4]. Separately, non-resident foreigners may buy property with a minimum investment of SAR 1 million, while Iqama-holding residents may buy one home for personal use without an investment threshold [2]."
+  },
+  {
+    "id": "ws-overview",
+    "question": "How many property listings does Wasalt have?",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true
+    },
+    "answer": "Wasalt has 62,684 property listings in this dataset: 45,490 for sale, 14,510 for rent, and 2,684 for daily rental [1]."
+  },
+  {
+    "id": "ws-riyadh-rent",
+    "question": "Apartments for rent in Riyadh",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true
+    },
+    "answer": "Wasalt lists apartments for rent in Riyadh across 161 districts, covering Central, East, North, South and West zones [1][2]. The dataset has 11,238 matching listings nationwide, but listing URLs carry no city, so this count is not Riyadh-specific [1]. Median size is about 100 sqm (some sizes approximate) [1]. Most common bedroom counts: 1 bedroom (4,095), 3 bedrooms (3,552), 2 bedrooms (1,696), 4 bedrooms (1,165) [1].\n\nPriced examples:\n- 50 sqm, 1 bedroom, Hitteen, Riyadh: 26,000 SAR/year [1][3]\n- 100 sqm, 1 bedroom, Al-Aqeek, Riyadh: 36,000 SAR/year [1][5]\n\nWasalt also lists properties for daily rental in Riyadh across 189 districts [9]."
+  },
+  {
+    "id": "ws-mahdiyah-price",
+    "question": "What is the price of the 124 sqm 3-bedroom apartment in Al-Mahdiyah?",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true
+    },
+    "answer": "The 124 sqm 3-bedroom apartment in Al-Mahdiyah is priced at 850,000 SAR [1]."
+  },
+  {
+    "id": "ar-astera",
+    "question": "ما هو مشروع ذا أستيرا من دار جلوبال؟",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true,
+      "no_dg_price": false
+    },
+    "answer": "مشروع \"ذا أستيرا، إنتيريورز باي أستون مارتن\" (The Astera, Interiors by Aston Martin) هو تطوير فاخر من دار جلوبال في جزيرة المرجان برأس الخيمة، الإمارات العربية المتحدة، بالشراكة مع أستون مارتن — أول مشروع لها في تصميم الديكورات الداخلية لعقار سكني في الشرق الأوسط [1][3].\n\nتفاصيل رئيسية:\n- النوع: شقق وفيلات شاطئية (بيتش ريزيدنسز وفيلات) [3]\n- الوحدات: شقق من غرفة إلى 3 غرف نوم، وفيلات شاطئية من 3 غرف نوم [3]\n- المساحة: 682 إلى 12,277 قدم مربع [3]\n- الحالة: تحت التطوير [3]\n- قيمة التطوير الإجمالية: 900 مليون درهم إماراتي (حوالي 200 مليون جنيه إسترليني)، وعقد الأعمال الرئيسية بقيمة 201,462,000 درهم [1]\n- لا تنشر دار جلوبال أسعار المشروع [3]"
+  },
+  {
+    "id": "ar-riyadh-rent",
+    "question": "شقق للإيجار في الرياض",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true
+    },
+    "answer": "نعم، تتوفر شقق للإيجار في الرياض عبر منصة وصلت. التفاصيل المتاحة من المصادر:\n\n- عدد الإعلانات: 11,238 إعلانًا للشقق للإيجار في جميع أنحاء المملكة (هذا العدد nationwide، وليس مخصصًا لمدينة الرياض فقط) [1].\n- المساحة الوسيطة الشائعة: 100 متر مربع (بعض المساحات تقريبية) [1].\n- أكثر عدد غرف نوم شيوعًا: غرفة واحدة (4,095)، 3 غرف (3,552)، غرفتين (1,696)، 4 غرف (1,165) [1].\n- التغطية الجغرافية: شقق للإيجار في 161 حيًا بالرياض [1]، وعقارات للإيجار في 176 حيًا [2]، موزعة على مناطق وسط، شرق، شمال، جنوب، غرب الرياض [2][4].\n\nأمثلة أسعار من إعلانات محددة:\n- شقة 50 متر مربع، غرفة واحدة: 26,000 ريال سنويًا، حيتن، الرياض [1].\n- شقة 100 متر مربع، غرفة واحدة: 36,000 ريال سنويًا، العقيق، الرياض [1][9]."
+  },
+  {
+    "id": "ar-jeddah-flat-price",
+    "question": "كم سعر شقة 150 متر مربع بغرفتين للايجار في جدة؟",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "grounded": true
+    },
+    "answer": "سعر شقة 150 متر مربع بغرفتين للإيجار في حي السلامة، جدة هو **38,000 ريال سعودي سنوياً** [2][3].\n\nتفاصيل الإعلان:\n- المساحة: 150 متر مربع\n- عدد الغرف: 2 غرفة\n- الغرض: إيجار\n- الموقع: السلامة، جدة\n- السعر: 38,000 ريال سنوياً [2][3]"
+  },
+  {
+    "id": "oos-weather",
+    "question": "What is the weather in Dubai tomorrow?",
+    "model": "nvidia/nemotron-3.5-super-vl:free",
+    "error": null,
+    "checks": {
+      "language": true,
+      "declines": true
+    },
+    "answer": "I don't have weather information for Dubai, and I can't answer questions about tomorrow's weather. I only answer questions about DarGlobal luxury developments and brand partnerships, and about property listings on Wasalt. If you have a real estate question, I'd be happy to help."
+  }
+]
