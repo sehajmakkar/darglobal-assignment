@@ -49,15 +49,15 @@ An AI chatbot that answers questions about **DarGlobal** luxury developments and
 
 ## Data sources & scraping policy
 
-| Source | What is collected |
-|---|---|
-| [DarGlobal](https://www.darglobal.co.uk) | Projects, brand partners, company pages, press, insights, blog |
-| [Wasalt](https://wasalt.sa) | Public property listings and category pages (English and Arabic) |
+| Source | What is collected | How |
+|---|---|---|
+| [DarGlobal](https://www.darglobal.co.uk) | Projects, brand partners, company pages, press, insights, blog | A standard browser at human pace, because the site shows a JavaScript bot check to plain HTTP clients |
+| [Wasalt](https://wasalt.sa) | Sale and rental listings, daily rentals, and city/district coverage, in English and Arabic | Wasalt's public sitemaps (`cdn.wasalt.sa`), plus a small sample of listing pages saved by hand |
 
 The scraper follows these rules:
 - It only fetches public pages that robots.txt allows. Sitemaps are the source of URLs.
-- It identifies itself with an honest User-Agent, limits its request rate, and caches responses so no page is downloaded twice.
-- It never tries to get around bot protection. Any data limits that result from this are listed under [Limitations](#limitations).
+- Automated requests use an honest User-Agent, a request-rate limit, and a response cache, so no page is downloaded twice.
+- It never tries to get around bot protection: no spoofed identities, stealth tooling, proxies, or CAPTCHA solving. Wasalt's main site blocks automated clients, so the scraper never requests it and uses only Wasalt's published sitemaps. The resulting gaps are listed under [Limitations](#limitations).
 
 ## Run locally
 
@@ -94,7 +94,9 @@ tests/         # unit, integration, and HTML fixtures
 
 ## Limitations
 
-_Filled in as they are found. Each will include its cause and impact._
+- **Most Wasalt listings have no price or city.** Wasalt's main site blocks automated access, so most listing data comes from sitemap URLs. Those URLs encode the property type, area, bedrooms, and listing ID. The bot says so when a question needs data it doesn't have.
+
+_More limitations will be added as they are found, each with its cause and impact._
 
 ## Roadmap
 
