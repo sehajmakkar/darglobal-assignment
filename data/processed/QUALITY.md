@@ -1,6 +1,6 @@
 # Data quality report
 
-Generated 2026-11-19 21:58 UTC.
+Generated 2026-11-20 00:03 UTC.
 
 ## DarGlobal projects — 29 records
 

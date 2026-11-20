@@ -38,6 +38,7 @@ build/
 # ─── Node / frontend ─────────────────────────────────────────────────
 node_modules/
 frontend/dist/
+*.tsbuildinfo
 .vite/
 npm-debug.log*
 

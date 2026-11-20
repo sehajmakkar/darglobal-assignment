@@ -17,6 +17,7 @@ from dgbot.core.config import Settings
 from dgbot.core.errors import DgbotError
 from dgbot.domain.places import CITY_AR
 from dgbot.ingestion.pipeline import INDEX_MANIFEST, LISTINGS_DB
+from dgbot.llm.base import LLMClient
 from dgbot.retrieval.listings import ListingsDB
 
 logger = logging.getLogger(__name__)
@@ -37,7 +38,6 @@ class Runtime:
 
 def build_runtime(settings: Settings) -> Runtime:
     """Real implementations. Raises DgbotError if the index or API key is missing."""
-    from dgbot.llm.openrouter import OpenRouterClient
     from dgbot.retrieval.embeddings import FastEmbedDense, FastEmbedSparse
     from dgbot.retrieval.retriever import HybridRetriever
     from dgbot.retrieval.vectorstore import QdrantStore, open_client
@@ -63,14 +63,35 @@ def build_runtime(settings: Settings) -> Runtime:
     listings = ListingsDB(settings.index_dir / LISTINGS_DB)
     chat = ChatService(
         retriever,
-        OpenRouterClient(settings),
+        _llm(settings),
         listings=listings,
         cities=city_spellings(listings.cities()),
         cache=AnswerCache(),
         top_k=settings.chat_sources_k,
         max_context_words=settings.chat_max_context_words,
     )
+    info["data_fetched"] = _data_fetched(settings)
     return Runtime(chat=chat, index_info=info, closers=[store, listings])
+
+
+def _llm(settings: Settings) -> LLMClient:
+    if settings.llm_fake:
+        from dgbot.llm.fake import FakeLLMClient, demo_answer
+
+        logger.warning("DGBOT_LLM_FAKE is on: answers are scripted (offline demo mode)")
+        return FakeLLMClient(demo_answer, model="fake/demo")
+    from dgbot.llm.openrouter import OpenRouterClient
+
+    return OpenRouterClient(settings)
+
+
+def _data_fetched(settings: Settings) -> str | None:
+    """When the snapshot's data was collected (shown as "data as of" in the UI)."""
+    manifest = settings.processed_data_dir / "manifest.json"
+    try:
+        return str(json.loads(manifest.read_text())["data_fetched"]["to"])
+    except (OSError, KeyError, ValueError):
+        return None
 
 
 def city_spellings(cities: list[str]) -> dict[str, str]:

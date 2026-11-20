@@ -129,6 +129,25 @@ A 12-question sample covered English and Arabic, DarGlobal and Wasalt, and one o
 
 The questions are in [`eval/answers_sample.jsonl`](eval/answers_sample.jsonl), and the answers are in [`eval/results/answers-sample.json`](eval/results/answers-sample.json).
 
+## Chat UI
+
+The web app is built with React, Vite, TypeScript, and Tailwind. FastAPI serves it from the same container.
+
+- **Citations.** Each `[n]` in an answer becomes a small pill showing the source site. Hover over it or tap it to see the source's title, snippet, and link.
+- **Source cards.** The sources an answer cites appear as cards below it. Sources that were searched but not cited are folded under "Also searched".
+- **Streaming.** Answers stream in as they are written, and Markdown is rendered, including tables. You can stop, copy, or retry an answer. When an answer comes from the cache, it says so.
+- **English and Arabic.** One toggle switches the whole interface between the two languages, including right-to-left layout for Arabic. Each message is laid out in its own direction.
+- **Starter questions** are suggested for both DarGlobal and Wasalt. The About panel shows what the assistant knows, when the data was collected, and its limitations.
+- **Errors are explained.** If the daily quota runs out, the model is busy, or you send too many questions, the app says so clearly instead of failing silently.
+- **Mobile layout.** It works on phones, with light and dark themes.
+
+To develop the UI locally:
+
+```bash
+DGBOT_LLM_FAKE=1 uv run python -m dgbot.api   # API with real search and scripted answers (uses no LLM quota)
+cd frontend && npm ci && npm run dev          # http://localhost:5173 (sends /api requests to :7860)
+```
+
 ## Run locally
 
 > The app currently serves a placeholder page and a health check while the chatbot is built.
@@ -184,7 +203,7 @@ _More limitations will be added as they are found, each with its cause and impac
 - [x] Cleaning, normalization, and the data snapshot ([`data/processed/`](data/processed/))
 - [x] Hybrid retrieval and evaluation set (hit@5 1.00 on the golden set, 0.92 on a held-out set)
 - [x] RAG chat API with streaming and citations
-- [ ] Chat UI (English and Arabic, RTL layout)
+- [x] Chat UI (English and Arabic, RTL layout)
 - [ ] Docker image
 - [ ] Public deployment and CI/CD
 - [ ] Structured search tool (filter by price, bedrooms, and city)

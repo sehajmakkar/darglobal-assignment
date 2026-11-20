@@ -14,6 +14,7 @@ def test_html_to_text_keeps_structure_and_drops_markup() -> None:
 
 def test_html_to_text_plain_string_and_empty() -> None:
     assert html_to_text("  just   text ") == "just text"
+    assert html_to_text("Apartments &amp; Villas &#38; Dubai") == "Apartments & Villas & Dubai"
     assert html_to_text("") is None
     assert html_to_text(None) is None
 
@@ -49,4 +50,11 @@ def test_cms_text_collects_content_and_skips_chrome_media_links() -> None:
     }
     assert cms_text(data) == (
         "Pagani Residences\nStatus\nUnder construction\nHand-built details.\nBlocks work too."
+    )
+
+
+def test_html_to_text_decodes_double_encoded_entities() -> None:
+    # DarGlobal's CMS sometimes double-encodes: "&amp;amp;" must still become "&".
+    assert html_to_text("<p>Trump International Hotel &amp;amp; Tower</p>") == (
+        "Trump International Hotel & Tower"
     )

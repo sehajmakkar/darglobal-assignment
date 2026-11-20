@@ -22,6 +22,7 @@ _INDEX_FIELDS = (
     "listings_rows",
     "snapshot_fingerprint",
     "built_at",
+    "data_fetched",
 )
 
 

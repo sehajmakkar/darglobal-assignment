@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterator
+from html import unescape
 
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 
@@ -26,8 +27,8 @@ def html_to_text(html: str | None) -> str | None:
     """HTML → readable text: paragraphs as blank-line breaks, list items as '- item'."""
     if not html or not html.strip():
         return None
-    if "<" not in html:
-        return clean_text(html)
+    if "<" not in html:  # plain text, but may still carry entities ("A &amp; B")
+        return clean_text(unescape(html))
     tree = LexborHTMLParser(html)
     for tag in _DROP_TAGS:
         for node in tree.css(tag):
@@ -37,7 +38,7 @@ def html_to_text(html: str | None) -> str | None:
         return None
     parts: list[str] = []
     _walk(root, parts)
-    return clean_text("".join(parts))
+    return clean_text(unescape("".join(parts)))  # CMS bodies are sometimes double-encoded
 
 
 def _walk(node: LexborNode, parts: list[str]) -> None:

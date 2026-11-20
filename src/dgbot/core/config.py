@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     host: str = "0.0.0.0"  # the container must listen on all interfaces
     # Directory served at "/". Defaults to the bundled placeholder page; Phase 5 points it
     # at the built React app (frontend/dist).
-    static_dir: Path = Path(__file__).resolve().parent.parent / "api" / "static"
+    static_dir: Path = Field(default_factory=lambda: _default_static_dir())
 
     # ── OpenRouter ───────────────────────────────────────────────────
     # One key (OPENROUTER_API_KEY) or a comma-separated pool (OPENROUTER_API_KEYS);
@@ -60,6 +60,8 @@ class Settings(BaseSettings):
     llm_max_tokens: int = Field(default=1_500, ge=200, le=8_000)
     llm_reasoning_effort: Literal["low", "medium", "high"] = "low"
     llm_temperature: float = Field(default=0.2, ge=0, le=1)
+    # Offline demo/dev: real retrieval, scripted answers, zero quota (never in prod).
+    llm_fake: bool = False
     # Sent as HTTP-Referer / X-Title so OpenRouter can attribute traffic to the app.
     app_url: str = "https://github.com/sehajmakkar/darglobal-assignment"
     app_title: str = "DarGlobal x Wasalt Assistant"
@@ -105,6 +107,17 @@ class Settings(BaseSettings):
         if isinstance(value, str):
             return [item.strip() for item in value.split(",") if item.strip()]
         return value
+
+
+def _default_static_dir() -> Path:
+    """The built React app if present (local `npm run build`), else the bundled placeholder.
+
+    The Docker image sets DGBOT_STATIC_DIR explicitly.
+    """
+    built = Path("frontend/dist")
+    if (built / "index.html").exists():
+        return built
+    return Path(__file__).resolve().parent.parent / "api" / "static"
 
 
 @lru_cache(maxsize=1)

@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/* Design tokens: quiet, premium. One warm accent (DarGlobal gold), teal for Wasalt. */
+@theme {
+  --font-sans: "Inter", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-bg: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-sunken: #efece5;
+  --color-line: #e3ded3;
+  --color-ink: #1d1b16;
+  --color-muted: #6b665c;
+  --color-accent: #9a7b4f;
+  --color-accent-soft: #f1e8d9;
+  --color-wasalt: #2f8f83;
+  --color-wasalt-soft: #dff1ee;
+  --color-danger: #b4432f;
+  --color-danger-soft: #f8e4df;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #15140f;
+    --color-surface: #1d1c17;
+    --color-sunken: #23221c;
+    --color-line: #34322a;
+    --color-ink: #ece7dc;
+    --color-muted: #a39d90;
+    --color-accent: #c9a56f;
+    --color-accent-soft: #352c1f;
+    --color-wasalt: #5cc2b5;
+    --color-wasalt-soft: #1b302d;
+    --color-danger: #e2836f;
+    --color-danger-soft: #3a211b;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+[dir="rtl"],
+:lang(ar) {
+  font-family: var(--font-arabic);
+}
+
+/* Streaming caret */
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.5ch;
+  height: 1em;
+  margin-inline-start: 2px;
+  vertical-align: -0.15em;
+  background: currentColor;
+  opacity: 0.6;
+  animation: blink 1s steps(2, start) infinite;
+}
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret::after {
+    animation: none;
+  }
+}

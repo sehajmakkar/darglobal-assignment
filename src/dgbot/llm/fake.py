@@ -40,3 +40,32 @@ class FakeLLMClient:
         for word in text.split(" "):
             yield Delta(word + " ")
         yield Done(model=self._model, prompt_tokens=100, completion_tokens=len(text.split()))
+
+
+def demo_answer(messages: Sequence[Message]) -> str:
+    """Offline demo answer built from the real retrieved sources (DGBOT_LLM_FAKE=1).
+
+    Exercises every UI feature — paragraphs, bullet list, table, citations — at zero quota.
+    """
+    import re
+
+    prompt = messages[-1].content
+    titles = re.findall(r"^\[(\d+)\] (.+?) — ", prompt, re.M)
+    if not titles:
+        return "I don't have information about that in my sources."
+    arabic = "Answer in Arabic" in prompt
+    rows = "\n".join(f"| {title[:60]} | [{n}] |" for n, title in titles[:4])
+    if arabic:
+        return (
+            f"هذه إجابة تجريبية (وضع العرض دون اتصال) مبنية على المصادر المسترجعة [1].\n\n"
+            f"- أهم مصدر: {titles[0][1]} [1]\n"
+            f"- مصادر أخرى ذات صلة [2][3]\n\n"
+            f"| المصدر | الإشارة |\n|---|---|\n{rows}"
+        )
+    return (
+        f"This is an **offline demo answer** built from the retrieved sources [1].\n\n"
+        f"- Top match: {titles[0][1]} [1]\n"
+        f"- Other relevant sources [2][3]\n\n"
+        f"| Source | Citation |\n|---|---|\n{rows}\n\n"
+        f"Real answers come from a free OpenRouter model."
+    )
