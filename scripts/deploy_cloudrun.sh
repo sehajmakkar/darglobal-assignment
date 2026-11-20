@@ -29,15 +29,26 @@ IMAGE="${REGION}-docker.pkg.dev/${GCP_PROJECT}/${REPO}/${SERVICE}:${TAG}"
 #    and a longer timeout than Cloud Build's 10-minute default. An explicit staging dir skips
 #    gcloud's "list every bucket in the project" ownership check, so the CI deployer only
 #    needs access to this one bucket (C-029).
+#    --async + polling: streaming logs needs project-wide Viewer, which the CI deployer
+#    deliberately doesn't have (C-029); the build's status is enough to gate the deploy.
 if [[ -z "${SKIP_BUILD:-}" ]]; then
-  gcloud builds submit . \
+  BUILD_ID="$(gcloud builds submit . \
     --project "$GCP_PROJECT" \
     --tag "$IMAGE" \
     --gcs-source-staging-dir "gs://${GCP_PROJECT}_cloudbuild/source" \
     --machine-type e2-highcpu-8 \
     --timeout 3600s \
-    --suppress-logs \
-    --quiet
+    --async \
+    --format 'value(id)')"
+  echo "Cloud Build ${BUILD_ID}: https://console.cloud.google.com/cloud-build/builds/${BUILD_ID}?project=${GCP_PROJECT}" >&2
+  while true; do
+    STATUS="$(gcloud builds describe "$BUILD_ID" --project "$GCP_PROJECT" --format 'value(status)')"
+    case "$STATUS" in
+      QUEUED | PENDING | WORKING) sleep 20 ;;
+      SUCCESS) echo "Cloud Build ${BUILD_ID}: SUCCESS" >&2 && break ;;
+      *) echo "Cloud Build ${BUILD_ID} ended with ${STATUS}" >&2 && exit 1 ;;
+    esac
+  done
 fi
 
 # 2. Deploy. Loading the 1.2 GB embedding model peaks above 2 GiB on Cloud Run (C-027) → 4 GiB,
