@@ -2,9 +2,11 @@
 
 An AI chatbot that answers questions about **DarGlobal** luxury developments and **Wasalt** property listings. It uses data scraped from both public websites and a free LLM served through [OpenRouter](https://openrouter.ai), and it runs as a single Docker container.
 
-> **Status:** 🚧 In development. The chatbot (search, chat API and UI) works locally and as a Docker image; the public deployment is next.
+> **Status:** ✅ Deployed on Google Cloud Run. Final testing and documentation are in progress.
 >
-> **Live URL:** https://dgbot-1023394202328.europe-west1.run.app (still the earlier placeholder page until the next deploy)
+> **Live URL:** https://dgbot-1023394202328.europe-west1.run.app
+>
+> The service scales to zero when idle, so the first request after a quiet period can take about 45 seconds while the embedding model loads.
 
 ---
 
@@ -220,7 +222,8 @@ _More limitations will be added as they are found, each with its cause and impac
 - [x] RAG chat API with streaming and citations
 - [x] Chat UI (English and Arabic, RTL layout)
 - [x] Docker image (multi-stage, search index built into the image)
-- [ ] Public deployment and CI/CD
+- [x] Public deployment on Google Cloud Run (OpenRouter key in Secret Manager)
+- [ ] Automatic deploys from GitHub Actions (keyless, Workload Identity Federation)
 - [ ] Structured search tool (filter by price, bedrooms, and city)
 
 ---

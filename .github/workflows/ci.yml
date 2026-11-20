@@ -24,7 +24,7 @@ jobs:
       - run: uv run ruff check .
       - run: uv run mypy src tests
       - run: uv run pytest  # live tests are deselected by default (no quota used)
-      - run: bash -n scripts/deploy_cloudrun.sh
+      - run: for f in scripts/*.sh; do bash -n "$f"; done
 
   frontend:
     name: Frontend typecheck, tests, build
@@ -46,6 +46,8 @@ jobs:
 
   docker:
     name: Docker build
+    # On main the deploy job builds the image on Cloud Build; on PRs this proves it builds.
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -58,5 +60,38 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # Deploy to Cloud Run on pushes to main is added in Phase 7 with Workload Identity
-  # Federation (keyless auth). Until then: GCP_PROJECT=... scripts/deploy_cloudrun.sh
+  deploy:
+    name: Deploy to Cloud Run
+    needs: [checks, frontend]
+    # Keyless: GitHub's OIDC token is exchanged for short-lived GCP credentials (WIF, D-052).
+    # Skipped until scripts/setup_github_wif.sh has run and its repository variables are set.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.GCP_WIF_PROVIDER != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: deploy-cloud-run
+      cancel-in-progress: false # never cut a rollout short; the next push deploys after
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - id: deploy
+        env:
+          GCP_PROJECT: ${{ vars.GCP_PROJECT }}
+        run: echo "url=$(scripts/deploy_cloudrun.sh | tail -1)" >> "$GITHUB_OUTPUT"
+      - name: Smoke test
+        run: |
+          for i in $(seq 1 20); do
+            curl -sf "${{ steps.deploy.outputs.url }}/api/health" | grep -q '"ready":true' && exit 0
+            sleep 3
+          done
+          echo "service did not become ready" >&2; exit 1
