@@ -8,6 +8,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
+import anyio
 from fastapi import HTTPException, Request
 
 from dgbot.api.ratelimit import RateLimiter
@@ -135,8 +136,23 @@ def get_app_settings(request: Request) -> Settings:
     return settings
 
 
-def get_runtime(request: Request) -> Runtime:
-    runtime: Runtime | None = request.app.state.runtime
+async def wait_for_runtime(request: Request, max_wait_s: float) -> Runtime | None:
+    """The runtime, waiting up to `max_wait_s` while it is still loading.
+
+    On Cloud Run an instance only gets CPU while it serves a request, so a request that
+    waits here is also what lets the background model load make progress (C-030).
+    """
+    state = request.app.state
+    if state.runtime is None and max_wait_s > 0:
+        with anyio.move_on_after(max_wait_s):
+            await state.runtime_loaded.wait()
+    runtime: Runtime | None = state.runtime
+    return runtime
+
+
+async def get_runtime(request: Request) -> Runtime:
+    settings: Settings = request.app.state.settings
+    runtime = await wait_for_runtime(request, settings.startup_wait_seconds)
     if runtime is None:
         raise HTTPException(503, detail=request.app.state.runtime_error or "service not ready")
     return runtime

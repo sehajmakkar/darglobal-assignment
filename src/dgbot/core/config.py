@@ -85,8 +85,8 @@ class Settings(BaseSettings):
     index_dir: Path = Path("data/index")  # git-ignored; built from the snapshot
     qdrant_url: str | None = None  # None → embedded local mode in index_dir (D-009)
     qdrant_collection: str = "dgbot"
-    # Bake-off winner (D-042): best MRR, Arabic 1.00, half the size of e5-large.
-    embedding_model: str = "google/embeddinggemma-300m"
+    # Bake-off winner (D-042), int8-quantized (D-053): same retrieval scores, 309 MB not 1.24 GB.
+    embedding_model: str = "google/embeddinggemma-300m-int8"
     sparse_model: str = "Qdrant/bm25"
     embedding_cache_dir: Path | None = None  # fastembed model cache (baked into the image)
     chunk_words: int = Field(default=200, ge=50, le=600)
@@ -97,6 +97,9 @@ class Settings(BaseSettings):
     # ── Chat API (Phase 4) ───────────────────────────────────────────
     chat_sources_k: int = Field(default=8, ge=1, le=20)  # chunks retrieved per question
     chat_max_context_words: int = Field(default=1_800, ge=200, le=8_000)
+    # The search model loads after the server starts listening (C-030); requests that need it
+    # wait this long. Below Cloud Run's 300 s request timeout.
+    startup_wait_seconds: float = Field(default=120, ge=0, le=280)
     # Per client IP; protects the 50/day free quota (D-015). 0 disables a limit.
     rate_limit_per_minute: int = Field(default=6, ge=0)
     rate_limit_per_day: int = Field(default=40, ge=0)

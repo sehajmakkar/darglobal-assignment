@@ -15,6 +15,7 @@ class HealthResponse(BaseModel):
     version: str
     env: str
     ready: bool = Field(description="search index + LLM client loaded")
+    warming_up: bool = Field(default=False, description="still loading after a cold start")
     detail: str | None = None
     index: dict[str, Any] | None = None
     llm_models: list[str] = Field(default_factory=list)

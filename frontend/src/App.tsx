@@ -1,4 +1,4 @@
-import { ArrowDown, Info, Languages, SquarePen } from "lucide-react";
+import { ArrowDown, Info, Languages, LoaderCircle, SquarePen } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AboutDrawer } from "./components/AboutDrawer";
 import { Composer } from "./components/Composer";
@@ -6,6 +6,7 @@ import { EmptyState } from "./components/EmptyState";
 import { AssistantMessage, UserMessage } from "./components/Messages";
 import { useChat } from "./hooks/useChat";
 import { getHealth } from "./lib/api";
+import { waitUntilReady } from "./lib/warmup";
 import { STRINGS } from "./lib/i18n";
 import type { Health, Lang } from "./types";
 
@@ -43,7 +44,7 @@ export default function App() {
   }, [lang, t.title]);
 
   useEffect(() => {
-    getHealth().then(setHealth);
+    void waitUntilReady(getHealth, setHealth);
   }, []);
 
   // Follow the stream only while the reader is at the bottom.
@@ -84,6 +85,15 @@ export default function App() {
           )}
         </nav>
       </header>
+      {health?.warming_up && (
+        <div
+          role="status"
+          className="flex items-center justify-center gap-2 border-b border-line bg-surface px-4 py-2 text-xs text-muted"
+        >
+          <LoaderCircle className="size-3.5 shrink-0 animate-spin" aria-hidden />
+          <span>{t.warmingUp}</span>
+        </div>
+      )}
 
       <main ref={scroller} onScroll={onScroll} className="relative flex-1 overflow-y-auto px-4 sm:px-6">
         {messages.length === 0 ? (

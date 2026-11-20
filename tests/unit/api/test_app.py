@@ -1,10 +1,13 @@
 import json
+import threading
+from collections.abc import Callable
 from typing import Any
 
 from fastapi.testclient import TestClient
 
 from dgbot import __version__
 from dgbot.api.app import create_app
+from dgbot.api.dependencies import Runtime
 from dgbot.core.config import Settings
 from dgbot.core.errors import DgbotError, LLMQuotaExceededError
 from dgbot.llm.fake import FakeLLMClient
@@ -30,10 +33,11 @@ def _events(body: str) -> list[tuple[str, Any]]:
 
 def test_health_reports_ready_and_index() -> None:
     with _client() as client:
-        body = client.get("/api/health").json()
+        body = client.get("/api/health?wait=5").json()
 
     assert body["status"] == "ok" and body["version"] == __version__ and body["env"] == "test"
-    assert body["ready"] is True and body["index"]["embedding_model"] == "fake-dense"
+    assert body["ready"] is True and body["warming_up"] is False
+    assert body["index"]["embedding_model"] == "fake-dense"
 
 
 def test_without_an_index_health_is_not_ready_and_chat_is_503() -> None:
@@ -42,8 +46,8 @@ def test_without_an_index_health_is_not_ready_and_chat_is_503() -> None:
 
     app = create_app(_settings(), runtime_factory=broken)  # type: ignore[arg-type]
     with TestClient(app) as client:
+        chat = client.post("/api/chat", json={"message": "hi"})  # waits for loading to end
         health = client.get("/api/health").json()
-        chat = client.post("/api/chat", json={"message": "hi"})
 
     assert health["ready"] is False and "no search index" in health["detail"]
     assert chat.status_code == 503
@@ -116,3 +120,65 @@ def test_input_limits() -> None:
             "/api/chat", json={"message": "hi", "history": [{"role": "user", "content": "a"}] * 11}
         )
     assert {too_long.status_code, empty.status_code, history.status_code} == {422}
+
+
+# ── Cold start: listen first, load the model in the background (C-030) ──────────
+
+
+def _slow_runtime(gate: threading.Event) -> Callable[[Settings], Runtime]:
+    def factory(_: Settings) -> Runtime:
+        assert gate.wait(10), "test gate never opened"
+        return fake_runtime(None)
+
+    return factory
+
+
+def test_ui_and_health_answer_while_the_model_is_still_loading() -> None:
+    gate = threading.Event()
+    app = create_app(_settings(), runtime_factory=_slow_runtime(gate))
+    with TestClient(app) as client:
+        page = client.get("/")
+        loading = client.get("/api/health").json()
+        gate.set()
+        ready = client.get("/api/health?wait=5").json()
+
+    assert page.status_code == 200
+    assert loading["ready"] is False and loading["warming_up"] is True
+    assert "warming up" in loading["detail"]
+    assert ready["ready"] is True and ready["warming_up"] is False
+
+
+def test_a_question_sent_during_warm_up_waits_instead_of_failing() -> None:
+    gate = threading.Event()
+    app = create_app(_settings(), runtime_factory=_slow_runtime(gate))
+    with TestClient(app) as client:
+        threading.Timer(0.2, gate.set).start()
+        response = client.post(
+            "/api/chat", json={"message": "What is The Astera?", "stream": False}
+        )
+
+    assert response.status_code == 200 and response.json()["answer"]
+
+
+def test_warm_up_longer_than_the_wait_limit_is_503() -> None:
+    gate = threading.Event()
+    app = create_app(_settings(startup_wait_seconds=0.1), runtime_factory=_slow_runtime(gate))
+    with TestClient(app) as client:
+        response = client.post("/api/chat", json={"message": "hi"})
+        gate.set()
+
+    assert response.status_code == 503 and "warming up" in response.json()["detail"]
+
+
+def test_an_unexpected_loading_crash_is_reported_not_hung() -> None:
+    def crash(_: Settings) -> Runtime:
+        raise RuntimeError("boom")
+
+    app = create_app(_settings(), runtime_factory=crash)
+    with TestClient(app) as client:
+        health = client.get("/api/health?wait=5").json()
+        chat = client.post("/api/chat", json={"message": "hi"})
+
+    assert health["ready"] is False and health["warming_up"] is False
+    assert health["detail"] == "chat runtime failed to load"
+    assert chat.status_code == 503

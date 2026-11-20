@@ -107,8 +107,21 @@ def test_recreate_is_idempotent() -> None:
     [
         ("intfloat/multilingual-e5-large", "query: "),
         ("google/embeddinggemma-300m", "task: search result | query: "),
+        ("google/embeddinggemma-300m-int8", "task: search result | query: "),
         ("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", ""),
     ],
 )
 def test_model_prefixes(model: str, query_prefix: str) -> None:
     assert prefixes_for(model)[0] == query_prefix
+
+
+def test_int8_gemma_is_registered_with_fastembed_without_downloading() -> None:
+    """D-053: the quantized model is a custom fastembed model; registering is idempotent."""
+    from fastembed import TextEmbedding
+
+    from dgbot.retrieval.embeddings import _register_custom_dense
+
+    for _ in range(2):
+        _register_custom_dense("google/embeddinggemma-300m-int8")
+    names = [m["model"] for m in TextEmbedding.list_supported_models()]
+    assert names.count("google/embeddinggemma-300m-int8") == 1

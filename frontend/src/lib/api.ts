@@ -76,9 +76,10 @@ async function toApiError(response: Response): Promise<ApiError> {
   return new ApiError("unavailable", detail);
 }
 
-export async function getHealth(): Promise<Health | null> {
+/** GET /api/health. `waitS` > 0 holds the request until the search model has loaded. */
+export async function getHealth(waitS = 0): Promise<Health | null> {
   try {
-    const response = await fetch("/api/health");
+    const response = await fetch(waitS > 0 ? `/api/health?wait=${waitS}` : "/api/health");
     return response.ok ? ((await response.json()) as Health) : null;
   } catch {
     return null;

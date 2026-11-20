@@ -32,6 +32,8 @@ export interface Health {
   version: string;
   env: string;
   ready: boolean;
+  /** Still loading the search model after a cold start (the server is up, answers wait). */
+  warming_up: boolean;
   detail: string | null;
   index: {
     embedding_model?: string;

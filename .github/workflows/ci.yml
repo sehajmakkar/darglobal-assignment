@@ -94,8 +94,10 @@ jobs:
           echo "url=$(tail -n 1 deploy.out)" >> "$GITHUB_OUTPUT"
       - name: Smoke test
         run: |
-          for i in $(seq 1 20); do
-            curl -sf "${{ steps.deploy.outputs.url }}/api/health" | grep -q '"ready":true' && exit 0
-            sleep 3
+          # ?wait holds the request until the model has loaded (C-030)
+          for i in 1 2 3; do
+            curl -sf --max-time 150 "${{ steps.deploy.outputs.url }}/api/health?wait=120" \
+              | grep -q '"ready":true' && exit 0
+            sleep 5
           done
           echo "service did not become ready" >&2; exit 1

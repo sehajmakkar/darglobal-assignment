@@ -65,7 +65,7 @@ ENV PATH="/app/.venv/bin:${PATH}" \
 USER app
 WORKDIR /app
 EXPOSE 7860
-# Startup loads the embedding model (~1-5 s); give it room before health checks count.
+# Liveness only: the server listens at once and loads the search model in the background (C-030).
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
     CMD ["python", "-c", "import os, urllib.request; urllib.request.urlopen(f\"http://127.0.0.1:{os.environ.get('PORT', '7860')}/api/health\", timeout=3)"]
 CMD ["python", "-m", "dgbot.api"]

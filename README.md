@@ -6,7 +6,7 @@ An AI chatbot that answers questions about **DarGlobal** luxury developments and
 >
 > **Live URL:** https://dgbot-1023394202328.europe-west1.run.app
 >
-> The service scales to zero when idle, so the first request after a quiet period can take about 45 seconds while the embedding model loads.
+> The service scales to zero when idle. After a quiet period the page still opens in seconds, with a short "waking up" notice while the search model loads; the first answer then takes a little longer.
 
 ---
 
@@ -85,11 +85,13 @@ Retrieval is measured, not eyeballed. The golden set in [`eval/golden.jsonl`](ev
 |---|---|---|---|---|
 | paraphrase-multilingual-MiniLM-L12-v2 | 0.2 GB | 0.86 | 0.71 | 0.33 |
 | multilingual-e5-large | 2.2 GB | 0.92 | 0.77 | 0.67 |
-| **EmbeddingGemma-300m** (chosen) | 1.2 GB | 0.92 | 0.80 | 0.67 |
+| **EmbeddingGemma-300m** | 1.2 GB | 0.92 | 0.80 | 0.67 |
 | **EmbeddingGemma-300m** + bilingual Wasalt summaries | 1.2 GB | **1.00** | **0.92** | **1.00** |
 | same, on the held-out set | | 0.92 | 0.89 | 1.00 |
+| **int8-quantized EmbeddingGemma** (deployed) | **0.3 GB** | **1.00** | 0.91 | **1.00** |
+| same, on the held-out set | | 0.92 | 0.89 | 1.00 |
 
-The first three rows are scored on the original version of the golden set; the bottom two are scored after the golden set's answer lists were completed. *hit@5* is the share of questions where a correct record appears in the top 5. *MRR* rewards ranking it higher. A median query takes about 50 ms on a laptop CPU.
+The first three rows are scored on the original version of the golden set; the rest are scored after the golden set's answer lists were completed. The deployed model is the same EmbeddingGemma quantized to 8-bit: a quarter of the size and faster to load, with two questions moving down one rank and the same hit@5. *hit@5* is the share of questions where a correct record appears in the top 5. *MRR* rewards ranking it higher. A median query takes about 50 ms on a laptop CPU.
 
 How the index is built:
 - **Chunks.** Each project becomes a fact card, a details chunk, and one chunk per FAQ. Articles are split into 200-word passages that keep their title. Wasalt's 62k listings go into SQLite for exact filters. The vector index gets generated summaries in English and Arabic: one per city and purpose, plus overall statistics.
@@ -165,9 +167,9 @@ Or `docker compose up --build`. The image is self-contained: the build compiles 
 
 | | |
 |---|---|
-| Build from a clean cache | ~23 min (about 20 of them embedding 3,102 passages on CPU) |
-| Image | 717 MB compressed, ~1.8 GB unpacked (1.26 GB is the embedding model) |
-| Start-up to ready | ~3 s |
+| Build from a clean cache | ~20 min (most of it embedding 3,102 passages on CPU) |
+| Embedding model | EmbeddingGemma-300m, int8-quantized: 309 MB, same retrieval scores as full precision |
+| Start-up | serves the page at once; search ready in ~1–3 s locally (longer after a cold start on Cloud Run) |
 | Memory | ~1 GB |
 
 The container runs as a non-root user, has a health check, and reads its port from `$PORT`.

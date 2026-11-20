@@ -49,6 +49,42 @@ def prefixes_for(model: str) -> tuple[str, str]:
     return next((p for family, p in _PREFIXES.items() if model.startswith(family)), ("", ""))
 
 
+# Models fastembed doesn't list but can load from an ONNX file in a public repo.
+# EmbeddingGemma int8: same weights and repo as fastembed's built-in fp32 model, quantized
+# to 309 MB instead of 1.24 GB — loads ~4x faster after a Cloud Run cold start (D-053).
+# Output `sentence_embedding` is the model's own pooled vector, as the built-in uses.
+_CUSTOM_DENSE: dict[str, tuple[str, str, int]] = {
+    # name: (hf repo, onnx file, dim)
+    "google/embeddinggemma-300m-int8": (
+        "onnx-community/embeddinggemma-300m-ONNX",
+        "onnx/model_quantized.onnx",
+        768,
+    ),
+}
+
+
+def _register_custom_dense(model: str) -> None:
+    """Teach fastembed a model from `_CUSTOM_DENSE` (its registry is process-wide)."""
+    from fastembed import TextEmbedding
+    from fastembed.common.model_description import ModelSource, PoolingType
+
+    if model not in _CUSTOM_DENSE or any(
+        m["model"] == model for m in TextEmbedding.list_supported_models()
+    ):
+        return
+    repo, onnx_file, dim = _CUSTOM_DENSE[model]
+    TextEmbedding.add_custom_model(
+        model=model,
+        pooling=PoolingType.DISABLED,
+        normalization=True,
+        sources=ModelSource(hf=repo),
+        dim=dim,
+        model_file=onnx_file,
+        additional_files=[f"{onnx_file}_data"],
+        output_name="sentence_embedding",
+    )
+
+
 class FastEmbedDense:
     """fastembed (ONNX, CPU) dense model. Loaded once; reuse the instance."""
 
@@ -56,6 +92,7 @@ class FastEmbedDense:
         from fastembed import TextEmbedding  # heavy import: only when actually used
 
         self.name = model
+        _register_custom_dense(model)
         self._model = TextEmbedding(model, cache_dir=str(cache_dir) if cache_dir else None)
         self._query_prefix, self._passage_prefix = prefixes_for(model)
         self._batch_size = batch_size

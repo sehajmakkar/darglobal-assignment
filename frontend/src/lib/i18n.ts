@@ -28,6 +28,7 @@ interface Strings {
   scrollDown: string;
   langToggle: string;
   disclaimer: string;
+  warmingUp: string;
   wasaltData: string;
   errors: Record<ErrorKind, string>;
   rateLimited: (seconds: number) => string;
@@ -59,6 +60,7 @@ export const STRINGS: Record<Lang, Strings> = {
     scrollDown: "Scroll to latest",
     langToggle: "العربية",
     disclaimer: "AI answers can be wrong — check the sources. DarGlobal doesn't publish prices.",
+    warmingUp: "Waking up the assistant after a quiet spell — your first answer may take up to a minute.",
     wasaltData: "Wasalt data · exact counts",
     errors: {
       quota: "The assistant has used today's free model quota. Please try again later.",
@@ -101,6 +103,7 @@ export const STRINGS: Record<Lang, Strings> = {
     scrollDown: "الانتقال إلى الأحدث",
     langToggle: "English",
     disclaimer: "قد تخطئ إجابات الذكاء الاصطناعي — راجع المصادر. لا تنشر دار جلوبال الأسعار.",
+    warmingUp: "جارٍ تشغيل المساعد بعد فترة خمول — قد تستغرق إجابتك الأولى حتى دقيقة.",
     wasaltData: "بيانات وصلت · أعداد دقيقة",
     errors: {
       quota: "استنفد المساعد الحصة المجانية لهذا اليوم. يرجى المحاولة لاحقاً.",
