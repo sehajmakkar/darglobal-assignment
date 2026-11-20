@@ -26,11 +26,14 @@ fi
 IMAGE="${REGION}-docker.pkg.dev/${GCP_PROJECT}/${REPO}/${SERVICE}:${TAG}"
 
 # 1. Build. The image builds its search index (~3,100 passages on CPU), so a bigger VM
-#    and a longer timeout than Cloud Build's 10-minute default.
+#    and a longer timeout than Cloud Build's 10-minute default. An explicit staging dir skips
+#    gcloud's "list every bucket in the project" ownership check, so the CI deployer only
+#    needs access to this one bucket (C-029).
 if [[ -z "${SKIP_BUILD:-}" ]]; then
   gcloud builds submit . \
     --project "$GCP_PROJECT" \
     --tag "$IMAGE" \
+    --gcs-source-staging-dir "gs://${GCP_PROJECT}_cloudbuild/source" \
     --machine-type e2-highcpu-8 \
     --timeout 3600s \
     --suppress-logs \
