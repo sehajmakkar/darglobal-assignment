@@ -46,6 +46,10 @@ for role in roles/run.admin roles/cloudbuild.builds.editor roles/serviceusage.se
 done
 gcloud storage buckets add-iam-policy-binding "gs://${GCP_PROJECT}_cloudbuild" \
   --member "serviceAccount:${DEPLOYER}" --role roles/storage.admin --format none
+# Cloud Run checks that whoever deploys an image can read it (C-029).
+gcloud artifacts repositories add-iam-policy-binding "${ARTIFACT_REPO:-cloud-run-source-deploy}" \
+  --project "$GCP_PROJECT" --location "${GCP_REGION:-europe-west1}" \
+  --member "serviceAccount:${DEPLOYER}" --role roles/artifactregistry.reader --format none
 for sa in "dgbot-runtime@${GCP_PROJECT}.iam.gserviceaccount.com" \
   "${NUMBER}-compute@developer.gserviceaccount.com"; do
   gcloud iam service-accounts add-iam-policy-binding "$sa" --project "$GCP_PROJECT" \
