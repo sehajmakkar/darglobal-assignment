@@ -3,8 +3,10 @@ import sqlite3
 from datetime import UTC, datetime
 from pathlib import Path
 
+import pytest
 from qdrant_client import QdrantClient
 
+from dgbot.core.errors import SearchIndexError
 from dgbot.domain.models import AreaCoverage, Faq, Listing, Project, Source
 from dgbot.ingestion.pipeline import build_index
 from dgbot.ingestion.snapshot import write_jsonl
@@ -97,3 +99,19 @@ def test_rebuild_gives_same_fingerprint(tmp_path: Path) -> None:
         for n in range(2)
     ]
     assert reports[0].snapshot_fingerprint == reports[1].snapshot_fingerprint
+
+
+def test_empty_snapshot_fails_instead_of_publishing_an_empty_index(tmp_path: Path) -> None:
+    """Regression (C-026): compose ingest ran without the snapshot mounted → 0-chunk index."""
+    store = QdrantStore(QdrantClient(":memory:"), "t")
+    with pytest.raises(SearchIndexError, match="no records"):
+        build_index(
+            tmp_path / "missing",
+            tmp_path / "index",
+            FakeDenseEmbedder(),
+            FakeSparseEmbedder(),
+            store,
+            chunk_words=200,
+            overlap_words=40,
+        )
+    assert not (tmp_path / "index" / "index.json").exists()

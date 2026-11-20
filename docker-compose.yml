@@ -1,0 +1,53 @@
+# Local runs of the production image.
+#
+#   docker compose up --build                      # the app as deployed: http://localhost:7860
+#   docker compose --profile qdrant-server up      # scalability path: Qdrant as a separate server
+#
+# Needs a .env with OPENROUTER_API_KEY (see .env.example).
+
+services:
+  app:
+    build: .
+    image: dgbot:local
+    ports: ["7860:7860"]
+    env_file: [.env]
+    restart: unless-stopped
+
+  # ── Scalability path (D-009): same image, vector store moved to a Qdrant server ──
+  # Several API replicas can then share one index. Switching is one env var: DGBOT_QDRANT_URL.
+  qdrant:
+    image: qdrant/qdrant:v1.20.2 # matches qdrant-client 1.20
+    profiles: [qdrant-server]
+    ports: ["6333:6333"]
+    volumes: [qdrant-data:/qdrant/storage]
+
+  # One-shot job: embed the committed snapshot into the Qdrant server (~5-20 min on CPU).
+  # The image ships only the built index, not the JSONL snapshot, so it is mounted here.
+  # The named volume starts as a copy of the image's /opt/index (owned by the app user),
+  # and receives index.json + listings.sqlite for the API container.
+  ingest:
+    image: dgbot:local
+    profiles: [qdrant-server]
+    environment:
+      DGBOT_QDRANT_URL: http://qdrant:6333
+    volumes:
+      - ./data/processed:/app/data/processed:ro
+      - index-meta:/opt/index
+    command: ["python", "-m", "dgbot.ingestion"]
+    depends_on: [qdrant]
+
+  app-qdrant:
+    image: dgbot:local
+    profiles: [qdrant-server]
+    ports: ["7861:7860"]
+    env_file: [.env]
+    environment:
+      DGBOT_QDRANT_URL: http://qdrant:6333
+    volumes: [index-meta:/opt/index]
+    depends_on:
+      ingest:
+        condition: service_completed_successfully
+
+volumes:
+  qdrant-data:
+  index-meta:

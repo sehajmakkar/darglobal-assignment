@@ -20,7 +20,7 @@ gcloud run deploy "$SERVICE" \
   --source . \
   --port 7860 \
   --cpu 1 \
-  --memory 1Gi \
+  --memory 2Gi \
   --cpu-boost \
   --min-instances 0 \
   --max-instances 2 \

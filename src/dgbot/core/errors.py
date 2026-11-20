@@ -23,6 +23,10 @@ class FetchError(DgbotError):
         self.reason = reason
 
 
+class SearchIndexError(DgbotError):
+    """The snapshot or search index is missing, empty, or out of sync with its manifest."""
+
+
 class LLMError(DgbotError):
     """Base for LLM-provider failures; the API maps these to user-facing messages."""
 

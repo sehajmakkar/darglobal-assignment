@@ -14,6 +14,7 @@ from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
+from dgbot.core.errors import SearchIndexError
 from dgbot.domain.models import Chunk
 from dgbot.ingestion.chunking import build_chunks
 from dgbot.ingestion.listings_db import build_listings_db
@@ -65,6 +66,8 @@ def build_index(
 ) -> IndexReport:
     started = time.perf_counter()
     records = list(iter_snapshot(snapshot_dir))
+    if not records:  # a wrong path or missing mount must fail, not publish an empty index
+        raise SearchIndexError(f"no records in snapshot {snapshot_dir}")
     chunks = build_chunks(records, chunk_words=chunk_words, overlap_words=overlap_words)
     logger.info("%d records → %d chunks; embedding with %s", len(records), len(chunks), dense.name)
 

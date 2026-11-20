@@ -30,3 +30,8 @@ tests/
 # Offline-only scraper code never ships (D-003); its deps are excluded via --no-default-groups
 src/dgbot/scraping/
 frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+eval/
+scripts/
+docker-compose.yml

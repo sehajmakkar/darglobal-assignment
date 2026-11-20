@@ -2,9 +2,9 @@
 
 An AI chatbot that answers questions about **DarGlobal** luxury developments and **Wasalt** property listings. It uses data scraped from both public websites and a free LLM served through [OpenRouter](https://openrouter.ai), and it runs as a single Docker container.
 
-> **Status:** 🚧 In development. The deployment pipeline is live; the chatbot itself is being built.
+> **Status:** 🚧 In development. The chatbot (search, chat API and UI) works locally and as a Docker image; the public deployment is next.
 >
-> **Live URL:** https://dgbot-1023394202328.europe-west1.run.app (currently a placeholder page and health check)
+> **Live URL:** https://dgbot-1023394202328.europe-west1.run.app (still the earlier placeholder page until the next deploy)
 
 ---
 
@@ -150,8 +150,6 @@ cd frontend && npm ci && npm run dev          # http://localhost:5173 (sends /ap
 
 ## Run locally
 
-> The app currently serves a placeholder page and a health check while the chatbot is built.
-
 **With Docker:**
 
 ```bash
@@ -159,6 +157,23 @@ cp .env.example .env            # add OPENROUTER_API_KEY
 docker build -t dg-assistant .
 docker run -p 7860:7860 --env-file .env dg-assistant
 # open http://localhost:7860  ·  API docs: http://localhost:7860/api/docs
+```
+
+Or `docker compose up --build`. The image is self-contained: the build compiles the UI, downloads the embedding model and builds the search index from the committed snapshot, so the container downloads nothing at startup.
+
+| | |
+|---|---|
+| Build from a clean cache | ~23 min (about 20 of them embedding 3,102 passages on CPU) |
+| Image | 717 MB compressed, ~1.8 GB unpacked (1.26 GB is the embedding model) |
+| Start-up to ready | ~3 s |
+| Memory | ~1 GB |
+
+The container runs as a non-root user, has a health check, and reads its port from `$PORT`.
+
+**Qdrant as a separate server** (the scaling path: several API containers can share one index). The same image is used, and only `DGBOT_QDRANT_URL` changes:
+
+```bash
+docker compose --profile qdrant-server up qdrant ingest app-qdrant   # API on http://localhost:7861
 ```
 
 **Without Docker** (needs [uv](https://docs.astral.sh/uv/)):
@@ -204,7 +219,7 @@ _More limitations will be added as they are found, each with its cause and impac
 - [x] Hybrid retrieval and evaluation set (hit@5 1.00 on the golden set, 0.92 on a held-out set)
 - [x] RAG chat API with streaming and citations
 - [x] Chat UI (English and Arabic, RTL layout)
-- [ ] Docker image
+- [x] Docker image (multi-stage, search index built into the image)
 - [ ] Public deployment and CI/CD
 - [ ] Structured search tool (filter by price, bedrooms, and city)
 
