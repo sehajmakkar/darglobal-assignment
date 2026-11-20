@@ -84,7 +84,7 @@ sequenceDiagram
 
 | Layer | Technology |
 |---|---|
-| Scraping | Python, httpx, selectolax, Playwright (only for pages that need JavaScript rendering), trafilatura |
+| Scraping | Python, httpx, selectolax, Playwright (a standard browser for DarGlobal, which blocks plain HTTP clients), defusedxml for sitemaps |
 | Data | Pydantic v2 schemas, JSONL snapshot |
 | Embeddings | fastembed, local: [EmbeddingGemma-300m](https://huggingface.co/google/embeddinggemma-300m) (multilingual), int8-quantized |
 | Vector search | Qdrant: hybrid dense + BM25 search with metadata filters |
@@ -114,7 +114,7 @@ The scraped data is committed as JSONL in [`data/processed/`](data/processed/), 
 | `darglobal/projects.jsonl` | 29 | Projects: location, city/country, coordinates, property type, status, unit types, amenities, highlights, FAQs, brand partner |
 | `darglobal/partners.jsonl` | 11 | Brand partners (Aston Martin, Pagani, Trump, Missoni, …) and their projects |
 | `darglobal/articles.jsonl` | 357 | Blog posts, press releases, and insights |
-| `darglobal/pages.jsonl` | 37 | One-of-one properties, special project pages, company pages |
+| `darglobal/pages.jsonl` | 43 | One-of-one properties, special project pages, company pages |
 | `wasalt/listings.jsonl.gz` | 62,687 | Sale, rent, and daily-rental listings from Wasalt's sitemaps: type, size, bedrooms, facing, Arabic link |
 | `wasalt/sample_listings.jsonl` | 23 | Listings saved by hand with price, city, district, and description |
 | `wasalt/areas.jsonl.gz` | 13,688 | Which property types Wasalt lists in each city and district |
@@ -226,7 +226,7 @@ Or `docker compose up --build`. The image is self-contained: the build compiles 
 |---|---|
 | Build from a clean cache | ~20 min (most of it embedding 3,102 passages on CPU) |
 | Embedding model | EmbeddingGemma-300m, int8-quantized: 309 MB, same retrieval scores as full precision |
-| Start-up | serves the page at once; search ready in ~1–3 s locally (longer after a cold start on Cloud Run) |
+| Start-up | serves the page at once; search ready in ~1–3 s locally, ~13 s on a fresh Cloud Run instance |
 | Memory | ~1–1.6 GB (Cloud Run runs it with 4 GiB to cover start-up peaks) |
 
 The container runs as a non-root user, has a health check, and reads its port from `$PORT`.
@@ -297,8 +297,10 @@ src/dgbot/
   evaluation/  # retrieval and answer-quality evals
 frontend/      # React chat UI
 data/processed # scraped data snapshot (JSONL)
-eval/          # golden question set
-tests/         # unit, integration, and HTML fixtures
+eval/          # golden question sets and answer-eval results
+tests/         # unit tests (mirror src/), opt-in live tests, saved HTML fixtures
+scripts/       # Cloud Run deploy, one-time keyless CI setup
+docs/          # README screenshots
 ```
 
 ## Limitations
@@ -323,8 +325,10 @@ tests/         # unit, integration, and HTML fixtures
 - [x] Public deployment on Google Cloud Run (OpenRouter key in Secret Manager)
 - [x] Structured Wasalt lookups (type, sale or rent, bedrooms, city) answered from SQLite
 - [x] Cold-start handling: page served at once, warm-up ping, int8 embedding model
-- [ ] Automatic deploys from GitHub Actions (keyless, Workload Identity Federation): set up, first green run pending
+- [x] Automatic deploys from GitHub Actions (keyless, Workload Identity Federation)
 
 ---
+
+The embedding model, [EmbeddingGemma](https://huggingface.co/google/embeddinggemma-300m), is used under Google's [Gemma Terms of Use](https://ai.google.dev/gemma/terms). Scraped content belongs to its publishers (DarGlobal, Wasalt) and is included only for this assessment.
 
 Built by Sehaj Preet as part of the DarGlobal Junior AI Engineer assessment.
